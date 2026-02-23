@@ -3,7 +3,7 @@ import $ from 'jquery';
 import Sortable from 'sortablejs';
 import { db } from '../smile/firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin } from '../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth } from '../widev.js';
 
 const CACHE = 'wii_tareas_v1', COL = 'tareas';
 const ESTADOS  = { pendiente:'Pendiente', progreso:'En progreso', revision:'Revisión', hecho:'Hecho' };
@@ -142,7 +142,7 @@ export const render = () => `
       <span class="tar_sync_dot tar_sync_loading" id="tar_sync_dot"></span>
       <button class="tar_ab_btn" id="tar_refresh" ${wiTip('Actualizar')}><i class="fas fa-rotate-right"></i></button>
       <div class="tar_quick_wrap">
-        <input type="text" class="tar_quick_input" id="tar_quick_input" placeholder="Nueva tarea… (Enter = crear)" maxlength="100"/>
+        <input type="text" class="tar_quick_input" id="tar_quick_input" placeholder="Nueva tarea" maxlength="100"/>
         <select class="tar_quick_select" id="tar_quick_tipo">
           ${Object.entries(TIPOS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('')}
         </select>
@@ -389,6 +389,7 @@ export const init = async () => {
   await _cargar();
   _renderBoard();
   _bind();
+  wiAuth(_cargar, _renderBoard);
   console.log('📋 Tareas v5.0 OK');
 };
 

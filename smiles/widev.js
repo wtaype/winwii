@@ -1,11 +1,6 @@
-import $ from 'jquery'; 
+import $  from 'jquery'; 
 
-// === CLICK SUMA V10.1 ===
-export const wiSuma = (sel, fn, num = 5) => {
-  let cont = 0; $(document).on('click', sel, () => ++cont === num && (fn(), cont = 0));
-};
-
-// === 👁️ OBSERVER v12 ===
+// OBSERVER v12_________________________________
 export const wiVista = (sel, fn, opts = {}) => {
   const { stagger = 0, anim = '', threshold = 0.1, once = true } = opts;
   const els = [...document.querySelectorAll(sel)];
@@ -19,7 +14,7 @@ export const wiVista = (sel, fn, opts = {}) => {
   els.forEach(el => obs.observe(el));
 };
 
-// CARGANDO V10.2
+// CARGANDO V10.2_________________________________
 export const wiSpin = (btn, act = true, txt = '') => {
   const $btn = $(btn);
   if (act) {
@@ -30,13 +25,39 @@ export const wiSpin = (btn, act = true, txt = '') => {
   }
 };
 
-// SALUDO DE BIENVENIDA V10.1
+// AUTH SIGNAL v2.0_________________________________
+const bus = new Set();
+export const wiAuth = Object.assign((load, render) => bus.add(async () => { await load(true); render(); }), {
+  on(fn)   { bus.add(fn); },
+  emit(wi) { bus.forEach(fn => { try { fn(wi); } catch(e) { console.error('wiAuth:', e); } }); },
+  login(wi, h = 24) { savels('wiSmile', wi, h); this.emit(wi); },
+  logout() { const k = ['wiflash','wiTema'].map(c => [c, localStorage.getItem(c)]); localStorage.clear(); k.forEach(([c, v]) => v && localStorage.setItem(c, v)); this.emit(null); },
+  get user() { return getls('wiSmile'); },
+  get logged() { return !!this.user?.usuario; }
+});
+
+// CARGA INTELIGENTE v14_________________________________
+export const wiSmart = (() => {
+  const ok = new Set(), c = getls('wiSmart');
+  const run = (o) => {
+    Object.entries(o).forEach(([t, v]) => [].concat(v).forEach(it => {
+      const k = `${t}:${it}`;
+      if (ok.has(k)) return; ok.add(k);
+      t === 'css' ? !$(`link[href="${it}"]`).length && $('<link>', { rel: 'stylesheet', href: it }).appendTo('head')
+        : typeof it === 'function' && it().catch?.(e => console.error('wiSmart:', e));
+    }));
+    savels('wiSmart', 1);
+  };
+  return (o) => c ? run(o) : $(document).one('touchstart scroll click mousemove', () => run(o));
+})();
+
+// SALUDO V10.1_________________________________
 export const Saludar = () => {
   const hrs = new Date().getHours();
   return hrs >= 5 && hrs < 12 ? 'Buenos días, ' : hrs >= 12 && hrs < 18 ? 'Buenas tardes, ' : 'Buenas noches, ';
 };
 
-// NOTIFICACIONES V10.1
+// NOTIFICACIONES V10.1_________________________________
 export function Notificacion(msg, tipo = 'error', tiempo = 3000) {
   const ico = {success:'fa-check-circle',error:'fa-times-circle',warning:'fa-exclamation-triangle',info:'fa-info-circle'}[tipo];
   if (!$('#notificationsContainer').length) $('body').append('<div id="notificationsContainer" style="position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem;"></div>');
@@ -47,25 +68,24 @@ export function Notificacion(msg, tipo = 'error', tiempo = 3000) {
   setTimeout(cerrar, tiempo);
 }
 
-// MENSAJE DE BIENVENIDA V10.1
+// MENSAJE V10.1_________________________________
 export function Mensaje(msg, tipo = 'success') {
   $('.alert-box').remove();
   const ico = {success:'fa-circle-check',error:'fa-circle-exclamation',warning:'fa-exclamation-triangle',info:'fa-info-circle'}[tipo];
   const $alerta = $(`<div class="alert-box" style="position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:15px 20px;border-radius:8px;background:var(--${tipo}-bg,var(--F));color:var(--${tipo});border-left:4px solid var(--${tipo});box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:1000;display:flex;align-items:center;gap:10px;min-width:300px;max-width:90%;"><i class="fas ${ico}" style="color:var(--${tipo});"></i><span>${msg}</span></div>`).appendTo('body').hide().fadeIn(300);
   setTimeout(() => $alerta.fadeOut(300, () => $alerta.remove()), 3000);
-};
+}
 
-// GUARDANDO DE LOCAL v10.1
+// SAVE LOCAL v11_________________________________
 export function savels(clave, valor, horas = 24) {
   try {
     if (!clave || typeof clave !== 'string') return false;
     localStorage.setItem(clave, JSON.stringify({ value: valor, expiry: Date.now() + horas * 3600000 }));
-    clave === 'wiSmile' && window.dispatchEvent(new CustomEvent('wiFresh', { detail: valor }));
     return true;
   } catch(e) { console.error('esv:', e); return false; }
 }
 
-// OBTENIENDO DE LOCAL v10.1
+// GET LOCAL v10.1_________________________________
 export function getls(clave) {
   try {
     if (!clave || typeof clave !== 'string') return null;
@@ -77,13 +97,12 @@ export function getls(clave) {
   } catch(e) { console.error('egt:', e); localStorage.removeItem(clave); return null; }
 }
 
-// ELIMINANDO DE LOCAL v10.2
+// REMOVE LOCAL v10.2_________________________________
 export function removels(...claves) {
   claves.flat().flatMap(c => typeof c === 'string' ? c.split(/[,\s]+/).filter(Boolean) : c)
     .forEach(clave => localStorage.removeItem(clave));
 }
-
-// TOOLTIP V11.0
+// TOOLTIP V11.0_________________________________
 export function wiTip(elmOrTxt, txt, tipo = 'top', tiempo = 1800) {
   if (!wiTip.CSS) {
     $('head').append('<style id="wiTip-css">.wiTip{position:fixed;color:var(--txa);z-index:99999;padding:.8vh 1.2vh;border-radius:.6vh;font-size:var(--fz_s4);font-weight:500;max-width:25vh;box-shadow:0 .4vh 1.2vh rgba(0,0,0,.2);opacity:0;transform:translateY(-.3vh);transition:all .2s cubic-bezier(.4,0,.2,1);pointer-events:none;backdrop-filter:blur(.4vh)}.wiTip.show{opacity:1;transform:translateY(0)}.wiTip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-.6vh;border:.6vh solid transparent;border-top-color:inherit}</style>');
@@ -102,9 +121,9 @@ wiTip.ver = (elm, txt, tipo, tiempo) => {
   const {left, top, width} = $(elm)[0].getBoundingClientRect(), tipW = $tip.outerWidth(), tipH = $tip.outerHeight();
   $tip.css({left: Math.max(8, Math.min(left + width/2 - tipW/2, innerWidth - tipW - 8)), top: top - tipH - 8});
   requestAnimationFrame(() => {$tip.addClass('show'); if (tiempo > 0) setTimeout(() => {$tip.removeClass('show'); setTimeout(() => $tip.remove(), 200)}, tiempo)});
-}; // <button ${wiTip('Vista previa')}>👁️</button> || <button ${wiTip('Guardado!', 'success', 3000)}>💾</button> wiTip(this, 'Email ya existe', 'error', 2500); wiTip('#miBtn', 'Copiado!', 'info', 1500);
+};
 
-// SISTEMA IP V10.1
+// SISTEMA IP V10.1_________________________________
 export const wiIp = (geo) => {
   return $.getJSON('https://ipinfo.io/json?token=3868948e170a74', data => {
     const ua = navigator.userAgent;
@@ -114,18 +133,14 @@ export const wiIp = (geo) => {
       browser: /Edg/i.test(ua) ? 'Edge' : /Chrome/i.test(ua) ? 'Chrome' : /Firefox/i.test(ua) ? 'Firefox' : /Safari/i.test(ua) && !/Chrome/i.test(ua) ? 'Safari' : 'Otro',
       os: /Windows/i.test(ua) ? 'Windows' : /Android/i.test(ua) ? 'Android' : /iPhone|iPad/i.test(ua) ? 'iOS' : /Mac/i.test(ua) ? 'macOS' : 'Linux',
       device: /Mobile|Android|iPhone|iPad/i.test(ua) ? 'Móvil' : /Tablet|iPad/i.test(ua) ? 'Tablet' : 'Escritorio',
-      screen: `${screen.width}×${screen.height}`,
-      language: navigator.language,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      utcOffset: new Date().getTimezoneOffset() / -60,
-      online: navigator.onLine
+      screen: `${screen.width}×${screen.height}`, language: navigator.language,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, utcOffset: new Date().getTimezoneOffset() / -60, online: navigator.onLine
     };
-    
     return typeof geo === 'function' ? geo(ipData) : geo === 'ciudad' ? `${ipData.city}, ${ipData.country}` : ipData[geo];
   }).fail(() => null);
 };
 
-// === MODALES V10.4 ===
+// MODALES V10.4_________________________________
 export const abrirModal = id => {
   const $m = $(`#${id}`); if (!$m.length) return console.warn(`Modal #${id} no existe`);
   $m.addClass('active'); $('body').addClass('modal-open');
@@ -143,9 +158,8 @@ export const cerrarTodos = () => {
     .on('click', '.wiModal.active', function(e) { if (e.target === this) cerrarTodos(); })
     .on('keydown', e => { if (e.key === 'Escape' && $('.wiModal.active').length) cerrarTodos(); });
 })();
-// === [END] MODALES V10.4 ===
 
-// FECHA CON FIREBASE + CACHE V12
+// FECHA FIREBASE + CACHE V12_________________________________
 export const wiDate = (tm) => ({
   save: val => {
     if (!val) return null;
@@ -163,7 +177,7 @@ export const wiDate = (tm) => ({
   }
 });
 
-// === COPIAR TEXTOS V10.2 ===
+// COPIAR TEXTOS V10.2_________________________________
 export const wicopy = (txt, elm = null, msg = '¡Copiado!') => {
   const getCnt = () => txt instanceof $ ? txt.text() || txt.val() || '' : txt?.nodeType ? txt.textContent || txt.value || '' : typeof txt === 'string' && txt.trim().match(/^[.#\[]/) && $(txt).length ? $(txt).text() || $(txt).val() || '' : String(txt ?? '');
   const cnt = getCnt();
@@ -179,23 +193,12 @@ export const wicopy = (txt, elm = null, msg = '¡Copiado!') => {
   }
 };
 
-// ===  ⚡ CARGA INTELIGENTE v14 ===
-export const wiSmart = (() => {
-  const ok = new Set(), c = getls('wiSmart');
-  const run = (o) => {
-    Object.entries(o).forEach(([t, v]) => [].concat(v).forEach(it => {
-      const k = `${t}:${it}`;
-      if (ok.has(k)) return; ok.add(k);
-      t === 'css' ? !$(`link[href="${it}"]`).length && $('<link>', { rel: 'stylesheet', href: it }).appendTo('head')
-        : typeof it === 'function' && it().catch?.(e => console.error('wiSmart:', e));
-    }));
-    savels('wiSmart', 1);
-  };
-  return (o) => c ? run(o) : $(document).one('touchstart scroll click mousemove', () => run(o));
-})();
+// CLICK SUMA V10.1_________________________________
+export const wiSuma = (sel, fn, num = 5) => {
+  let cont = 0; $(document).on('click', sel, () => ++cont === num && (fn(), cont = 0));
+};
 
-
-// === [START] FUNCIONES GENIALES V10.1 ===
+// FUNCIONES GENIALES V10.1_________________________________
 export const year = () => new Date().getFullYear();
 export const Mayu = (ltr) => ltr.toUpperCase();
 export const Capi = (ltr) => ltr[0].toUpperCase() + ltr.slice(1);

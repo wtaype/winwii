@@ -46,7 +46,7 @@
   align-items: center;
   background: var(--bg);
   border: 1px solid var(--brd);
-  border-radius: 50px;
+  border-radius: .5vh;
   overflow: hidden;
   padding: 0 .2vh;
 }
@@ -54,7 +54,7 @@
   display: flex;
   align-items: center;
   gap: .25vh;
-  padding: .3vh .6vh;
+  padding: .9vh .6vh;
   cursor: default;
   transition: background .08s;
   border-radius: 50px;
@@ -98,7 +98,7 @@
   align-items: center;
   justify-content: center;
   gap: .2vh;
-  padding: .3vh .5vh;
+  padding:  .7vh;
   background: var(--bg);
   border: 1px solid var(--brd);
   border-radius: .4vh;
@@ -173,7 +173,7 @@
   display: inline-flex;
   align-items: center;
   gap: .25vh;
-  padding: .25vh .55vh;
+  padding: .7vh .55vh;
   background: var(--bg);
   border: 1px solid var(--brd);
   border-radius: .4vh;

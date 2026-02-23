@@ -2,7 +2,7 @@ import './planes.css';
 import $ from 'jquery';
 import { db } from '../smile/firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin } from '../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth } from '../widev.js';
 
 const CACHE = 'wii_planes_v1', COL = 'planes';
 
@@ -359,6 +359,7 @@ export const init = async () => {
   await _cargar();
   _renderContent();
   _bind();
+  wiAuth(_cargar, _renderContent);
   console.log('🚀 Planes v1.0 OK');
 };
 

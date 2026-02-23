@@ -2,7 +2,7 @@ import './semanal.css';
 import $ from 'jquery';
 import { db } from '../smile/firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin } from '../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth} from '../widev.js';
 
 const CACHE = 'wii_semanal_v1', COL = 'semanal';
 
@@ -451,6 +451,7 @@ export const init = async () => {
   await _cargar();
   _renderBoard();
   _bind();
+  wiAuth(_cargar, _renderBoard);
   console.log('📅 Semanal v1.0 OK');
 };
 

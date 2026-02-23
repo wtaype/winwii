@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { db } from '../smile/firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip } from '../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiAuth} from '../widev.js';
 
 const CACHE_KEY='wii_horario_v4', NOTA_KEY='wii_horario_notas_v3', TAR_CACHE='wii_tareas_v1', COL='horario', TAR_COL='tareas';
 
@@ -406,6 +406,8 @@ export const init = async () => {
   _actualizarResumen();
   $('#hor_tarea_fecha').val(defFechaTarea());
   _timerProx=setInterval(_actualizarResumen,60000);
+  wiAuth(_cargarEvs, () => { _renderBlock(_diaActivo); _cal?.refetchEvents(); _actualizarResumen(); });
+  wiAuth(_cargarEvs, _renderBlock);
   console.log('📅 Horario v6.0 OK');
 };
 

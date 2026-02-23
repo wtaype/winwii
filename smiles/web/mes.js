@@ -2,7 +2,7 @@ import './mes.css';
 import $ from 'jquery';
 import { db } from '../smile/firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin } from '../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth} from '../widev.js';
 
 const CACHE = 'wii_mes_v1', COL = 'meses';
 

@@ -1,0 +1,527 @@
+/* ==================== MODAL AUTH ==================== */
+.au_mod .modalBody {
+  max-width: 28vw;
+  min-width: 320px;
+  padding: 0;
+  background: var(--wb);
+  border-radius: 1.6vh;
+  box-shadow: 0 2vh 6vh rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--brd);
+  animation: auSlideIn var(--tr_m) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.au_reg .modalBody {
+  max-width: 42vw;
+}
+
+@keyframes auSlideIn {
+  from {
+    transform: translateY(-3vh) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.au_mod .modalX {
+  position: absolute;
+  top: 1.5vh;
+  right: 1.5vh;
+  background: var(--bg4);
+  color: var(--tx2);
+  border: none;
+  width: 3.5vh;
+  height: 3.5vh;
+  border-radius: 50%;
+  font-size: var(--fz_m3);
+  cursor: pointer;
+  transition: all var(--tr_f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.au_mod .modalX:hover {
+  background: var(--mco);
+  color: var(--txa);
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* ==================== CONTENIDO PRINCIPAL ==================== */
+.au_main {
+  padding: 3.5vh 2.5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg);
+}
+
+.au_logo {
+  width: 8vh;
+  height: 8vh;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1vh 0 1.5vh;
+  box-shadow: 0 1vh 3vh var(--bg5);
+  background: linear-gradient(135deg, var(--mco), var(--hva));
+  animation: auFloat 3s ease-in-out infinite;
+  transition: all var(--tr_f);
+}
+
+@keyframes auFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5vh);
+  }
+}
+
+.au_logo:hover {
+  transform: scale(1.08) rotate(5deg);
+  box-shadow: 0 1.5vh 4vh var(--bg5);
+}
+
+.au_logo img {
+  width: 90%;
+  height: 90%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform var(--tr_f);
+}
+
+.au_logo:hover img {
+  transform: scale(1.1);
+}
+
+.au_mod h2 {
+  font-family: var(--ff_P);
+  font-size: var(--fz_l2);
+  font-weight: 700;
+  color: var(--mco);
+  margin: 0.5vh 0 2.5vh;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+/* ==================== FORMULARIOS ==================== */
+.au_mod form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8vh;
+}
+
+#registroForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8vh 1.5vw;
+}
+
+#registroForm .au_btn,
+#registroForm .au_links {
+  grid-column: 1 / -1;
+  margin-top: 0.5vh;
+}
+
+/* ==================== GRUPOS DE INPUT ==================== */
+.au_grupo {
+  position: relative;
+  width: 100%;
+  animation: auFadeIn 0.4s ease backwards;
+}
+
+.au_grupo:nth-child(1) { animation-delay: 0.05s; }
+.au_grupo:nth-child(2) { animation-delay: 0.1s; }
+.au_grupo:nth-child(3) { animation-delay: 0.15s; }
+.au_grupo:nth-child(4) { animation-delay: 0.2s; }
+.au_grupo:nth-child(5) { animation-delay: 0.25s; }
+.au_grupo:nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes auFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(1vh);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.au_grupo > i:first-of-type {
+  position: absolute;
+  left: 1.2vh;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mco);
+  opacity: 0.7;
+  font-size: var(--fz_m2);
+  z-index: 2;
+  pointer-events: none;
+  transition: all var(--tr_f);
+}
+
+.au_grupo:focus-within > i:first-of-type {
+  opacity: 1;
+  color: var(--hva);
+  transform: translateY(-50%) scale(1.12);
+}
+
+/* ==================== TOGGLE PASSWORD (OJITOS) ==================== */
+.au_ojo {
+  position: absolute !important;
+  left: auto !important;
+  right: 1.2vh !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  cursor: pointer !important;
+  pointer-events: all !important;
+  z-index: 3 !important;
+  opacity: 0.6 !important;
+  color: var(--tx3) !important;
+  transition: all var(--tr_f) !important;
+  font-size: var(--fz_m2) !important;
+}
+
+.au_ojo:hover {
+  opacity: 1 !important;
+  color: var(--mco) !important;
+  transform: translateY(-50%) scale(1.15) !important;
+}
+
+.au_ojo:active {
+  transform: translateY(-50%) scale(0.95) !important;
+}
+
+/* ==================== INPUTS ==================== */
+.au_mod input {
+  width: 100%;
+  padding: 1.4vh 4vh 1.4vh 31px;
+  border-radius: 1vh;
+  border: 2px solid var(--brd);
+  background: var(--inp);
+  color: var(--tx);
+  font-size: var(--fz_m2);
+  font-family: var(--ff_P);
+  transition: all var(--tr_f);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.au_mod input:hover {
+  border-color: var(--mco);
+  background: var(--wb);
+}
+
+.au_mod input:focus {
+  border-color: var(--mco);
+  background: var(--wb);
+  box-shadow: 0 0 0 4px var(--bg4);
+  transform: translateY(-0.1vh);
+}
+
+.au_mod input::placeholder {
+  color: var(--tx3);
+  opacity: 0.7;
+}
+
+.au_mod input:focus::placeholder {
+  opacity: 0.5;
+}
+
+/* ==================== CHECKBOX ==================== */
+.au_check {
+  margin-top: 0.5vh;
+}
+
+.au_check label {
+  display: flex;
+  align-items: center;
+  gap: 1vh;
+  font-size: var(--fz_m1);
+  color: var(--tx);
+  cursor: pointer;
+  transition: color var(--tr_f);
+}
+
+.au_check label:hover {
+  color: var(--mco);
+}
+
+.au_check input[type="checkbox"] {
+  width: 1.8vh;
+  height: 1.8vh;
+  padding: 0;
+  accent-color: var(--mco);
+  cursor: pointer;
+  transition: transform var(--tr_f);
+}
+
+.au_check input[type="checkbox"]:hover {
+  transform: scale(1.1);
+}
+
+.au_check a {
+  color: var(--mco);
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color var(--tr_f);
+}
+
+.au_check a:hover {
+  color: var(--hva);
+}
+
+/* ==================== BOTONES ==================== */
+.au_btn {
+  width: 100%;
+  padding: 1.5vh 2vw;
+  background: linear-gradient(135deg, var(--mco), var(--hva));
+  color: var(--txa);
+  border: none;
+  border-radius: 1vh;
+  font-weight: 600;
+  font-size: var(--fz_m2);
+  font-family: var(--ff_P);
+  cursor: pointer;
+  box-shadow: 0 0.6vh 2vh var(--bg5);
+  transition: all var(--tr_f);
+  position: relative;
+  overflow: hidden;
+  animation: auFadeIn 0.4s ease 0.35s backwards;
+}
+
+.au_btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.au_btn:hover::before {
+  width: 40vh;
+  height: 40vh;
+}
+
+.au_btn:hover {
+  transform: translateY(-0.3vh) scale(1.02);
+  box-shadow: 0 1vh 3vh var(--bg5);
+}
+
+.au_btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.au_btn.loading {
+  opacity: 0.8;
+  cursor: wait;
+  pointer-events: none;
+  animation: auPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes auPulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.au_btn.inactivo {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(50%);
+  transform: none;
+}
+
+.au_btn i {
+  margin-right: 0.5vh;
+  color: var(--txa) !important;
+}
+
+/* ==================== LINKS DE NAVEGACIÓN ==================== */
+.au_links {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5vh;
+  gap: 1vh;
+  animation: auFadeIn 0.4s ease 0.4s backwards;
+  flex-wrap: wrap;
+}
+
+.au_links span {
+  color: var(--mco);
+  cursor: pointer;
+  padding: 0.8vh 1vw;
+  font-size: var(--fz_m1);
+  font-weight: 500;
+  border-radius: 0.6vh;
+  transition: all var(--tr_f);
+  position: relative;
+  white-space: nowrap;
+}
+
+.au_links span::after {
+  content: '';
+  position: absolute;
+  bottom: 0.3vh;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--mco);
+  transition: all var(--tr_f);
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+
+.au_links span:hover {
+  color: var(--hva);
+  background: var(--bg4);
+  transform: translateY(-0.2vh);
+}
+
+.au_links span:hover::after {
+  width: 80%;
+}
+
+.au_links span:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* ==================== PÁRRAFOS ==================== */
+.au_mod p {
+  color: var(--tx);
+  font-size: var(--fz_m2);
+  margin: 1vh 0 1.5vh;
+  opacity: 0.9;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ==================== COMPATIBILIDAD DE TEMAS ==================== */
+.au_mod h2,
+.au_mod .au_links span {
+  color: var(--mco);
+}
+
+.au_mod input {
+  background: var(--inp);
+  border-color: var(--brd);
+  color: var(--tx);
+}
+
+.au_mod input:focus {
+  background: var(--wb);
+  border-color: var(--mco);
+}
+
+.au_mod input::placeholder {
+  color: var(--tx3);
+}
+
+.au_grupo > i:first-of-type {
+  color: var(--mco);
+}
+
+.au_ojo {
+  color: var(--tx3) !important;
+}
+
+.au_ojo:hover {
+  color: var(--mco) !important;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1200px) {
+  .au_mod .modalBody {
+    max-width: 36vw;
+  }
+  .au_reg .modalBody {
+    max-width: 52vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .au_mod .modalBody {
+    max-width: 95vw;
+    min-width: auto;
+  }
+  
+  .au_reg .modalBody {
+    max-width: 95vw;
+  }
+  
+  .au_main {
+    padding: 3vh 4vw;
+  }
+  
+  .au_mod h2 {
+    font-size: var(--fz_l1);
+  }
+  
+  .au_logo {
+    width: 7vh;
+    height: 7vh;
+  }
+  
+  .au_mod input {
+    font-size: var(--fz_m1);
+  }
+  
+  .au_grupo > i:first-of-type {
+    left: 1vh;
+  }
+  
+  .au_ojo {
+    right: 1vh !important;
+  }
+  
+  .au_btn {
+    padding: 1.6vh 4vw;
+    font-size: var(--fz_m1);
+  }
+  
+  #registroForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8vh;
+  }
+  
+  .au_links {
+    flex-direction: column;
+    gap: 1.2vh;
+  }
+  
+  .au_links span {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .au_main {
+    padding: 2.5vh 3vw;
+  }
+  
+  .au_logo {
+    width: 6vh;
+    height: 6vh;
+  }
+
+}

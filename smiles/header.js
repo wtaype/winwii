@@ -1,8 +1,9 @@
 import $ from 'jquery';
 import { rutas } from './rutas/ruta.js';
-import { getls, removels, Mensaje } from './widev.js';
+import { getls, removels, Mensaje, wiAuth } from './widev.js';
+import './auth/wiauth.js';
 
-// ── VISTA PERSONAL ──
+// VISTA PERSONAL_________________________________
 export const personal = wi => {
   Mensaje('Bienvenido ' + wi.nombre);
   $('.wiauth').html(`
@@ -10,35 +11,23 @@ export const personal = wi => {
     <div class="sesion"><img src="${wi.imagen || './smile.avif'}" alt="${wi.nombre}"><span>${wi.nombre}</span></div>
     <button class="wibtn_auth bt_salir"><i class="fas fa-sign-out-alt"></i> Salir</button>
   `);
-  // rutas.navigate('/');
+  // rutas.navigate('/smile')
 };
 
-// ── VISTA PÚBLICA ──
+// VISTA PUBLICA_________________________________
 const publico = () => {
-  // $('.wiauth').html(`
-  //   <button class="wibtn_auth registrar"><i class="fas fa-user-plus"></i><span>Registrar</span></button>
-  //   <button class="wibtn_auth login"><i class="fas fa-sign-in-alt"></i><span>Login</span></button>
-  // `);
+  $('.wiauth').html(`
+    <button class="wibtn_auth registrar"><i class="fas fa-user-plus"></i><span>Registrar</span></button>
+    <button class="wibtn_auth login"><i class="fas fa-sign-in-alt"></i><span>Login</span></button>
+  `);
 };
 
-// ── AUTH OBSERVER (lazy) ──
-let _unsub = null;
-export const wiObservar = async (...fns) => {
-  if (_unsub) return;
-  const { auth, onAuthStateChanged } = await import('./smile/login.js');
-  _unsub = onAuthStateChanged(auth, async user => {
-    user ? fns.forEach(fn => fn(user).catch(console.error)) : (removels('wiSmile'), publico());
-  });
-};
-export const wiDesconectar = () => { _unsub?.(); _unsub = null; };
+// MI AUTH_________________________________
+wiAuth.on(wi => wi ? personal(wi) : (publico(), rutas.navigate('/')));
+const wi = wiAuth.user; wi ? personal(wi) : publico();
 
-// ── INIT ──
-const wi = getls('wiSmile');
-wi ? (personal(wi), wiObservar()) : publico();
-
-// ── SALIR ──
+// SALIR_________________________________
 $(document).on('click.wi', '.bt_salir', async () => {
-  const keep = ['wiflash', 'wiTema'].map(k => [k, localStorage.getItem(k)]);
-  const { auth, signOut } = await import('./smile/login.js');
-  await signOut(auth); localStorage.clear(); keep.forEach(([k, v]) => v && localStorage.setItem(k, v)); location.reload();
+  const { auth, signOut } = await import('./auth/wiauth.js');
+  await signOut(auth); wiAuth.logout();
 });
