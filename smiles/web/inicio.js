@@ -20,7 +20,7 @@ const features = [
     items:[{icon:'fa-check-square',name:'To-Do list',desc:'Lista de tareas por día'},{icon:'fa-flag',name:'Prioridades',desc:'Marca tus tareas más urgentes'},{icon:'fa-rotate',name:'Seguimiento',desc:'Controla tu progreso diario'}]},
   { id:'semanal',  icon:'fa-table-cells',   color:'#7000FF', nombre:'Semanal',  desc:'Vista global de toda tu semana en un vistazo',
     items:[{icon:'fa-table',name:'Tabla semanal',desc:'Los 7 días en una sola vista'},{icon:'fa-note-sticky',name:'Notas por día',desc:'Block de notas por jornada'},{icon:'fa-chart-bar',name:'Resumen',desc:'Estadísticas de tu semana'}]},
-  { id:'abiertos', icon:'fa-folder-open',   color:'#FF5C69', nombre:'Abiertos', desc:'Proyectos y temas pendientes por cerrar',
+  { id:'tareas', icon:'fa-folder-open',   color:'#FF5C69', nombre:'Tareas', desc:'Proyectos y temas pendientes por cerrar',
     items:[{icon:'fa-circle-dot',name:'En progreso',desc:'Tareas que aún no terminan'},{icon:'fa-bookmark',name:'Guardados',desc:'Temas importantes marcados'},{icon:'fa-spinner',name:'Pendientes',desc:'Lo que queda por resolver'}]},
   { id:'mes',      icon:'fa-calendar-days', color:'#FFB800', nombre:'Mes',      desc:'Calendario mensual con vista de todos tus días',
     items:[{icon:'fa-calendar',name:'Vista mensual',desc:'Panorama del mes completo'},{icon:'fa-circle-check',name:'Días completados',desc:'Historial de días exitosos'},{icon:'fa-pen-to-square',name:'Planifica el mes',desc:'Agenda eventos futuros'}]},
