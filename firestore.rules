@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    match /{document=**} {
+      allow read, write: if request.auth != null; 
+    } //General y todas bds con Auth
+	 match /smiles/{document} {
+      allow read: if true; // ✅ Cualquiera puede leer (incluso sin autenticar)
+      allow create: if true; // ✅ Cualquiera puede crear (para registro inicial)
+      allow update: if request.auth != null; // 🔒 Solo usuarios autenticados pueden actualizar
+      allow delete: if request.auth != null && request.auth.uid == resource.data.uid; // 🔒 Solo el dueño puede eliminar su propio documento
+    }  
+    match /imagen/{document} {
+      allow read: if true;
+    } // Acceso lectura general
+    
+  }
+}

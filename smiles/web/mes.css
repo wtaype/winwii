@@ -1,0 +1,601 @@
+/* ══════════════════════════════════════════════════════════════
+   MES.CSS — v1.0 · Vista mensual de eventos
+══════════════════════════════════════════════════════════════ */
+
+/* ══ 1. LAYOUT ══════════════════════════════════════════════ */
+.mes_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: .6vh;
+  min-height: calc(100vh - 8vh);
+  font-family: var(--ff_P);
+}
+
+/* ══ 2. TOOLBAR ═════════════════════════════════════════════ */
+.mes_toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .8vh; padding: .5vh 1.2vh;
+  background: var(--wb); border: 1px solid var(--brd); border-radius: 12px;
+  flex-shrink: 0; box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  animation: mes_in .25s cubic-bezier(.4,0,.2,1) both;
+}
+.mes_tb_left, .mes_tb_right { display: flex; align-items: center; gap: .6vh; }
+
+.mes_logo {
+  display: flex; align-items: center; gap: .4vh;
+  font-size: var(--fz_m4); font-weight: 800;
+  color: var(--mco); letter-spacing: -.4px;
+}
+.mes_logo i { font-size: var(--fz_m5); }
+
+/* Navegación */
+.mes_nav { display: flex; align-items: center; gap: .2vh; }
+.mes_nav_btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.4vh; height: 2.4vh; border-radius: .4vh;
+  background: var(--bg); border: 1px solid var(--brd);
+  color: var(--tx2); font-size: var(--fz_s3); cursor: pointer; transition: all .08s;
+}
+.mes_nav_btn:hover { background: var(--bg4); border-color: var(--mco); color: var(--mco); }
+.mes_nav_btn:active { transform: scale(.9); }
+
+.mes_nav_hoy {
+  display: inline-flex; align-items: center; gap: .25vh;
+  padding: .28vh .7vh;
+  background: color-mix(in srgb, var(--mco) 10%, var(--bg4));
+  border: 1px solid color-mix(in srgb, var(--mco) 30%, var(--brd));
+  border-radius: .4vh; font-size: var(--fz_s3); font-weight: 700;
+  color: var(--mco); cursor: pointer; transition: all .08s;
+}
+.mes_nav_hoy:hover { background: var(--mco); color: var(--txa); border-color: var(--mco); }
+
+.mes_titulo_mes {
+  font-size: var(--fz_m4); font-weight: 800; color: var(--tx);
+  background: var(--bg4); border: 1px solid var(--brd);
+  border-radius: .4vh; padding: .2vh .8vh; white-space: nowrap;
+  letter-spacing: -.2px; min-width: 12vh; text-align: center;
+}
+
+/* Resumen */
+.mes_resumen {
+  display: flex; align-items: center;
+  background: var(--bg); border: 1px solid var(--brd); border-radius: 50px; padding: 0 .2vh;
+}
+.mes_res_item {
+  display: flex; align-items: center; gap: .25vh;
+  padding: .3vh .6vh; cursor: default; border-radius: 50px;
+  white-space: nowrap; transition: background .08s;
+}
+.mes_res_item:hover { background: var(--bg4); }
+.mes_res_item i      { font-size: var(--fz_s3); }
+.mes_res_item strong { font-size: var(--fz_m1); font-weight: 800; color: var(--tx); }
+.mes_res_item span   { font-size: var(--fz_s2); color: var(--tx3); font-weight: 500; }
+.mes_res_sep         { width: 1px; height: 1.2vh; background: var(--brd); flex-shrink: 0; }
+
+/* ══ 3. ACTION BAR ══════════════════════════════════════════ */
+.mes_actionbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .6vh; padding: .4vh .8vh;
+  background: var(--wb); border: 1px solid var(--brd); border-radius: 10px;
+  flex-shrink: 0;
+  animation: mes_in .25s cubic-bezier(.4,0,.2,1) .03s both;
+}
+.mes_ab_left, .mes_ab_right { display: flex; align-items: center; gap: .4vh; }
+
+.mes_sync_dot {
+  width: .6vh; height: .6vh; border-radius: 50%; flex-shrink: 0; transition: background .15s;
+}
+.mes_sync_loading { background: var(--warning); animation: mes_pulse .9s ease infinite; }
+.mes_sync_ok      { background: var(--success); }
+.mes_sync_error   { background: var(--error); }
+.mes_sync_saving  { background: var(--mco); animation: mes_pulse .9s ease infinite; }
+
+.mes_ab_btn {
+  display: inline-flex; align-items: center; gap: .3vh;
+  padding: .35vh .6vh; background: var(--bg); border: 1px solid var(--brd);
+  border-radius: .5vh; font-size: var(--fz_s4); font-weight: 600;
+  color: var(--tx2); cursor: pointer; transition: all .08s; line-height: 1;
+}
+.mes_ab_btn:hover { background: var(--bg4); border-color: var(--mco); color: var(--mco); }
+.mes_ab_btn:active { transform: scale(.95); }
+
+.mes_ab_nuevo {
+  background: linear-gradient(135deg, var(--mco), var(--bg2));
+  color: var(--txa); border-color: var(--mco);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--mco) 30%, transparent);
+}
+.mes_ab_nuevo:hover { filter: brightness(1.1); color: var(--txa); border-color: var(--mco); }
+
+.mes_prog_wrap {
+  display: flex; align-items: center; gap: .5vh;
+  padding: .2vh .6vh; background: var(--bg4);
+  border: 1px solid var(--brd); border-radius: .4vh;
+}
+.mes_prog_label { font-size: var(--fz_s3); font-weight: 600; color: var(--tx3); white-space: nowrap; }
+.mes_prog_track { width: 10vh; height: .35vh; background: var(--brd); border-radius: 3px; overflow: hidden; flex-shrink: 0; }
+.mes_prog_fill  { height: 100%; border-radius: 3px; background: var(--mco); transition: width .3s cubic-bezier(.4,0,.2,1); }
+.mes_prog_pct   { font-size: var(--fz_s3); font-weight: 800; color: var(--mco); white-space: nowrap; }
+
+/* ══ 4. BODY (2 columnas) ═══════════════════════════════════ */
+.mes_body {
+  display: grid;
+  grid-template-columns: 1fr 26vh;
+  gap: .6vh;
+  flex: 1;
+  align-items: start;
+  animation: mes_in .3s cubic-bezier(.4,0,.2,1) .06s both;
+}
+
+/* ══ 5. PANEL CALENDARIO ════════════════════════════════════ */
+.mes_cal_panel {
+  background: var(--wb);
+  border: 1px solid var(--brd);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+
+/* Días de semana header */
+.mes_dias_semana {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  background: var(--bg);
+  border-bottom: 2px solid var(--brd);
+}
+.mes_dia_lbl {
+  text-align: center; padding: .5vh 0;
+  font-size: var(--fz_s3); font-weight: 700; color: var(--tx2);
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.mes_dia_lbl_fin { color: var(--mco); }
+
+/* Grid */
+.mes_grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  height: 80vh;
+}
+.fc .fc-daygrid-day-number{
+    text-align: center;
+}
+/* ══ 6. CELDAS ══════════════════════════════════════════════ */
+.mes_cell {
+  min-height: 6.5vh;
+  border-right: 1px solid color-mix(in srgb, var(--brd) 50%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--brd) 50%, transparent);
+  padding: .3vh .4vh;
+  cursor: pointer;
+  transition: all .08s;
+  display: flex;
+  flex-direction: column;
+  gap: .15vh;
+  position: relative;
+}
+.mes_cell:nth-child(7n) { border-right: none; }
+
+.mes_cell:hover { background: color-mix(in srgb, var(--mco) 5%, var(--bg4)); }
+.mes_cell_vacio { cursor: default; background: color-mix(in srgb, var(--bg) 60%, transparent); }
+.mes_cell_vacio:hover { background: transparent; }
+
+.mes_cell_hoy {
+  background: color-mix(in srgb, var(--mco) 8%, var(--bg4));
+  border: 2px solid color-mix(in srgb, var(--mco) 40%, var(--brd)) !important;
+  border-radius: 4px;
+  z-index: 1;
+}
+.mes_cell_past { opacity: .6; }
+.mes_cell_fin  { background: color-mix(in srgb, var(--brd) 15%, transparent); }
+
+.mes_cell_sel {
+  background: color-mix(in srgb, var(--mco) 12%, var(--bg4)) !important;
+  box-shadow: inset 0 0 0 2px var(--mco);
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* Número de día */
+.mes_cell_num {
+  font-size: var(--fz_s3); font-weight: 700; color: var(--tx2);
+  line-height: 1; align-self: center;
+  width: 1.6vh; height: 1.6vh; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.mes_cell_num_hoy {
+  background: var(--mco); color: var(--txa);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--mco) 40%, transparent);
+}
+.mes_cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Dots eventos */
+.mes_cell_dots {
+  display: flex; gap: .15vh; flex-wrap: wrap;
+  align-items: center;
+}
+.mes_dot {
+  width: .55vh; height: .55vh; border-radius: 50%;
+  flex-shrink: 0; transition: transform .08s;
+}
+.mes_cell:hover .mes_dot { transform: scale(1.2); }
+.mes_dot_mas {
+  font-size: var(--fz_s1); font-weight: 800; color: var(--tx3);
+  line-height: 1;
+}
+
+/* ══ 7. PANEL DETALLE ═══════════════════════════════════════ */
+.mes_detail_panel {
+  background: var(--wb);
+  border: 1px solid var(--brd);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+  position: sticky;
+  top: 1vh;
+}
+
+.mes_detail_head {
+  display: flex; align-items: center; gap: .6vh;
+  padding: .7vh .9vh;
+  background: var(--bg);
+  border-bottom: 2px solid var(--dh_color, var(--brd));
+  flex-shrink: 0;
+  transition: border-color .15s;
+}
+.mes_detail_fecha_ico {
+  width: 2.6vh; height: 2.6vh; border-radius: 8px;
+  background: color-mix(in srgb, var(--mco) 12%, var(--bg4));
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.mes_detail_fecha_ico i { font-size: var(--fz_m1); color: var(--mco); }
+
+.mes_detail_titulo {
+  font-size: var(--fz_s4); font-weight: 800; color: var(--tx);
+  text-transform: capitalize; line-height: 1.2;
+}
+.mes_detail_sub {
+  font-size: var(--fz_s2); color: var(--tx3); font-weight: 500; text-transform: capitalize;
+}
+
+.mes_detail_add {
+  margin-left: auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 2vh; height: 2vh; border-radius: 50%;
+  background: color-mix(in srgb, var(--mco) 12%, var(--bg4));
+  border: 1px solid color-mix(in srgb, var(--mco) 25%, var(--brd));
+  color: var(--mco); font-size: var(--fz_s2); cursor: pointer;
+  transition: all .08s; padding: 0; flex-shrink: 0;
+  transform: none !important; box-shadow: none !important;
+}
+.mes_detail_add:hover { background: var(--mco); color: var(--txa); }
+
+.mes_detail_body {
+  flex: 1; overflow-y: auto;
+  padding: .4vh;
+  display: flex; flex-direction: column; gap: .3vh;
+  scrollbar-width: thin; scrollbar-color: var(--mco) transparent;
+}
+
+.mes_detail_empty {
+  display: flex; flex-direction: column; align-items: center;
+  gap: .3vh; padding: 2vh .5vh; color: var(--tx3);
+  font-size: var(--fz_s3); font-weight: 500; text-align: center;
+}
+.mes_detail_empty i { font-size: var(--fz_m4); opacity: .18; }
+
+/* ══ 8. ITEM EVENTO ─────────────────────────────────────── */
+.mes_ev_item {
+  background: var(--bg4);
+  border: 1px solid var(--brd);
+  border-left: 3px solid var(--ev_c, var(--mco));
+  border-radius: 7px;
+  padding: .35vh .45vh;
+  cursor: pointer;
+  display: flex; align-items: flex-start; gap: .35vh;
+  transition: all .08s;
+}
+.mes_ev_item:hover {
+  background: var(--bg);
+  border-color: var(--ev_c, var(--mco));
+  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+  transform: translateX(2px);
+}
+.mes_ev_done { opacity: .5; }
+.mes_ev_done .mes_ev_titulo { text-decoration: line-through; color: var(--tx3); }
+
+.mes_ev_left { flex-shrink: 0; padding-top: .05vh; }
+.mes_ev_check {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.6vh; height: 1.6vh; border-radius: 50%;
+  border: 2px solid var(--brd); background: var(--wb);
+  font-size: var(--fz_s3); cursor: pointer; color: var(--tx3);
+  transition: all .08s; padding: 0;
+  transform: none !important; box-shadow: none !important;
+}
+.mes_ev_check:hover { border-color: var(--success); color: var(--success); }
+.mes_ev_checked { background: var(--success); border-color: var(--success); color: #fff !important; }
+.mes_ev_checked i { color: #fff; }
+
+.mes_ev_body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .1vh; }
+.mes_ev_titulo {
+  font-size: var(--fz_s4); font-weight: 700; color: var(--tx);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.3;
+}
+.mes_ev_meta { display: flex; flex-wrap: wrap; gap: .15vh; align-items: center; }
+.mes_ev_hora {
+  display: inline-flex; align-items: center; gap: .1vh;
+  font-size: var(--fz_s2); font-weight: 600; color: var(--tx3);
+}
+.mes_ev_hora i { font-size: var(--fz_s2); }
+.mes_ev_cat {
+  display: inline-flex; align-items: center; gap: .1vh;
+  padding: .02vh .25vh; border-radius: 50px;
+  font-size: var(--fz_s1); font-weight: 600;
+  background: color-mix(in srgb, var(--cc) 10%, var(--bg4)); color: var(--cc);
+}
+.mes_ev_cat i { font-size: var(--fz_s1); }
+.mes_ev_prio { display: inline-flex; align-items: center; font-size: var(--fz_s2); color: var(--pc); }
+.mes_ev_nota {
+  font-size: var(--fz_s2); color: var(--tx3); line-height: 1.4; margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.mes_ev_actions {
+  display: flex; flex-direction: column; gap: .12vh;
+  opacity: 0; flex-shrink: 0; transition: opacity .08s;
+}
+.mes_ev_item:hover .mes_ev_actions { opacity: 1; }
+.mes_ev_edit, .mes_ev_del {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.5vh; height: 1.5vh; border-radius: 3px;
+  background: none; border: none; cursor: pointer;
+  font-size: var(--fz_s2); transition: all .08s; padding: 0; color: var(--tx3);
+  transform: none !important; box-shadow: none !important;
+}
+.mes_ev_edit:hover { background: color-mix(in srgb, var(--mco) 12%, var(--bg4)); color: var(--mco); }
+.mes_ev_del:hover  { background: rgba(255,56,73,.12); color: var(--error); }
+
+/* ══ 9. MODAL ═══════════════════════════════════════════════ */
+.mes_modal {
+  background: var(--wb); border-radius: 16px;
+  max-width: 480px; width: 95vw; max-height: 90vh;
+  overflow-y: auto; position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  animation: mes_modal_in .18s cubic-bezier(.4,0,.2,1);
+  scrollbar-width: thin; scrollbar-color: var(--mco) var(--bg4);
+}
+.mes_modal::-webkit-scrollbar       { width: 3px; }
+.mes_modal::-webkit-scrollbar-track { background: var(--bg4); border-radius: 3px; }
+.mes_modal::-webkit-scrollbar-thumb { background: var(--mco); border-radius: 3px; }
+
+.mes_modal_hero {
+  display: flex; align-items: center; gap: .9vh;
+  padding: 1.1vh 1.4vh; border-radius: 16px 16px 0 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--mco) 85%, transparent), color-mix(in srgb, var(--mco) 55%, transparent));
+  position: relative; overflow: hidden; transition: background .2s;
+}
+.mes_modal_hero::after {
+  content: ''; position: absolute; right: -2vh; top: -2vh;
+  width: 8vh; height: 8vh; border-radius: 50%;
+  background: rgba(255,255,255,.06); pointer-events: none;
+}
+.mes_modal_ico {
+  width: 3.2vh; height: 3.2vh; border-radius: 9px;
+  background: var(--mco); display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2); flex-shrink: 0; transition: background .15s;
+}
+.mes_modal_ico i { font-size: var(--fz_m2); color: #fff; }
+.mes_modal_tit { font-size: var(--fz_m3); font-weight: 800; color: #fff; margin: 0; }
+.mes_modal_sub { font-size: var(--fz_s3); color: rgba(255,255,255,.7); margin: 0; }
+
+.mes_modal_body { padding: .9vh 1.4vh; display: flex; flex-direction: column; gap: .55vh; }
+
+/* Fields */
+.mes_field     { display: flex; flex-direction: column; gap: .18vh; }
+.mes_field_row { display: grid; gap: .55vh; }
+.mes_field_row3 { grid-template-columns: repeat(3,1fr); }
+
+.mes_label {
+  display: flex; align-items: center; gap: .3vh;
+  font-size: var(--fz_s3); font-weight: 600; color: var(--tx1); margin-bottom: .1vh;
+}
+.mes_label i { color: var(--mco); font-size: var(--fz_s3); }
+.mes_req { color: var(--error); }
+
+.mes_input_ico { position: relative; display: flex; align-items: center; }
+.mes_input_ico > i { position: absolute; left: .6vh; font-size: var(--fz_s4); color: var(--tx3); pointer-events: none; z-index: 1; }
+.mes_input_ico:focus-within > i { color: var(--mco); }
+
+.mes_input {
+  width: 100%; padding: .4vh .6vh .4vh 2vh;
+  background: var(--bg); border: 1.5px solid var(--brd);
+  border-radius: .45vh; color: var(--tx); font-size: var(--fz_s4);
+  font-family: var(--ff_P); transition: all .08s; outline: none;
+}
+.mes_input:focus { border-color: var(--mco); background: var(--wb); box-shadow: 0 0 0 2px color-mix(in srgb, var(--mco) 10%, transparent); }
+.mes_input::placeholder { color: var(--tx3); }
+.mes_input_plain { padding-left: .6vh !important; }
+
+.mes_textarea {
+  width: 100%; padding: .4vh .6vh;
+  background: var(--bg); border: 1.5px solid var(--brd);
+  border-radius: .45vh; color: var(--tx); font-size: var(--fz_s4);
+  font-family: var(--ff_P); resize: vertical; transition: all .08s; outline: none;
+}
+.mes_textarea:focus { border-color: var(--mco); background: var(--wb); box-shadow: 0 0 0 2px color-mix(in srgb, var(--mco) 10%, transparent); }
+.mes_textarea::placeholder { color: var(--tx3); }
+
+.mes_select {
+  width: 100%; padding: .38vh .55vh;
+  background: var(--bg); border: 1.5px solid var(--brd);
+  border-radius: .45vh; color: var(--tx); font-size: var(--fz_s4);
+  font-family: var(--ff_P); cursor: pointer; transition: all .08s; outline: none;
+}
+.mes_select:focus { border-color: var(--mco); box-shadow: 0 0 0 2px color-mix(in srgb, var(--mco) 10%, transparent); }
+.mes_select option { background: var(--wb); color: var(--tx); }
+
+/* ══ 10. FECHA CON SUGERENCIAS ══════════════════════════════ */
+.mes_fecha_wrap {
+  display: flex; flex-direction: column; gap: .35vh;
+}
+.mes_sugerencias {
+  display: flex; gap: .3vh; flex-wrap: wrap;
+}
+.mes_sug_btn {
+  display: inline-flex; align-items: center; gap: .25vh;
+  padding: .22vh .5vh;
+  background: color-mix(in srgb, var(--sc) 8%, var(--bg4));
+  border: 1.5px solid color-mix(in srgb, var(--sc) 20%, var(--brd));
+  border-radius: 50px; font-size: var(--fz_s2); font-weight: 700;
+  color: var(--sc); cursor: pointer; transition: all .08s;
+  font-family: var(--ff_P);
+  transform: none !important; box-shadow: none !important;
+}
+.mes_sug_btn i { font-size: var(--fz_s2); }
+.mes_sug_btn:hover {
+  background: var(--sc);
+  color: #fff;
+  border-color: var(--sc);
+}
+.mes_sug_btn.active {
+  background: var(--sc);
+  color: #fff;
+  border-color: var(--sc);
+  box-shadow: 0 2px 6px color-mix(in srgb, var(--sc) 35%, transparent) !important;
+}
+
+/* ══ 11. COLORES ════════════════════════════════════════════ */
+.mes_colores { display: flex; gap: .4vh; align-items: center; padding: .2vh 0; flex-wrap: wrap; }
+.mes_color_opt {
+  width: 1.8vh; height: 1.8vh; border-radius: 50%;
+  background: var(--c); border: 2px solid transparent;
+  cursor: pointer; transition: all .08s; padding: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,.14);
+}
+.mes_color_opt:hover { transform: scale(1.15); }
+.mes_color_opt.active { border-color: var(--tx); transform: scale(1.25); box-shadow: 0 2px 6px rgba(0,0,0,.22); }
+
+/* ══ 12. FOOTER MODAL ═══════════════════════════════════════ */
+.mes_modal_footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: .6vh; margin-top: .35vh;
+  border-top: 1px solid var(--brd); gap: .4vh;
+}
+.mes_modal_footer_r { display: flex; align-items: center; gap: .35vh; }
+
+.mes_btn_del {
+  display: inline-flex; align-items: center; gap: .3vh;
+  padding: .35vh .7vh; border-radius: .45vh;
+  background: rgba(255,56,73,.07); color: var(--error);
+  border: 1.5px solid rgba(255,56,73,.18);
+  font-size: var(--fz_s4); font-weight: 700; cursor: pointer;
+  transition: all .08s; font-family: var(--ff_P);
+}
+.mes_btn_del:hover { background: rgba(255,56,73,.14); border-color: var(--error); }
+.mes_btn_del:active { transform: scale(.95); }
+
+.mes_btn_cancel {
+  display: inline-flex; align-items: center;
+  padding: .35vh .9vh; border-radius: .45vh;
+  background: var(--bg1); color: var(--tx2); border: 1.5px solid var(--brd);
+  font-size: var(--fz_s4); font-weight: 600; cursor: pointer;
+  transition: all .08s; font-family: var(--ff_P);
+}
+.mes_btn_cancel:hover { background: var(--bg4); color: var(--tx); }
+.mes_btn_cancel:active { transform: scale(.95); }
+
+.mes_btn_save {
+  display: inline-flex; align-items: center; gap: .3vh;
+  padding: .4vh 1.1vh; border-radius: .45vh;
+  background: linear-gradient(135deg, var(--mco), var(--bg2));
+  color: var(--txa); border: none; font-size: var(--fz_s4); font-weight: 700;
+  cursor: pointer; font-family: var(--ff_P);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--mco) 30%, transparent);
+  transition: all .08s;
+}
+.mes_btn_save:hover { filter: brightness(1.08); }
+.mes_btn_save:active { transform: scale(.95); }
+.mes_btn_save:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* ══ 13. CONFIRM ════════════════════════════════════════════ */
+.mes_modal_confirm {
+  background: var(--wb); border-radius: 16px;
+  max-width: 310px; width: 92vw; padding: 1.8vh 1.6vh; text-align: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,.12);
+  animation: mes_modal_in .18s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column; align-items: center; gap: .6vh;
+}
+.mes_confirm_ico {
+  width: 4.5vh; height: 4.5vh; border-radius: 50%;
+  background: rgba(255,56,73,.1); color: var(--error);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--fz_l1); border: 2px solid rgba(255,56,73,.15);
+  animation: mes_warn 1.2s ease infinite;
+}
+.mes_modal_confirm h3 { font-size: var(--fz_m3); font-weight: 800; color: var(--tx); margin: 0; }
+.mes_modal_confirm p  { font-size: var(--fz_s4); color: var(--tx2); margin: 0; font-weight: 500; }
+.mes_confirm_btns { display: flex; gap: .45vh; justify-content: center; width: 100%; }
+
+.mes_btn_del_confirm {
+  display: inline-flex; align-items: center; gap: .3vh;
+  padding: .45vh 1.2vh; border-radius: .5vh;
+  background: linear-gradient(135deg, var(--error), #c0392b);
+  color: #fff; border: none; font-size: var(--fz_s4); font-weight: 700;
+  cursor: pointer; font-family: var(--ff_P); transition: all .08s;
+  box-shadow: 0 2px 8px rgba(255,56,73,.28);
+}
+.mes_btn_del_confirm:hover { filter: brightness(1.1); }
+.mes_btn_del_confirm:active { transform: scale(.95); }
+
+/* ══ 14. ANIMACIONES ════════════════════════════════════════ */
+@keyframes mes_in {
+  from { opacity: 0; transform: translateY(.6vh); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes mes_modal_in {
+  from { opacity: 0; transform: translateY(6px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes mes_warn {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.04); }
+}
+@keyframes mes_pulse {
+  0%,100% { opacity: 1; }
+  50%     { opacity: .25; }
+}
+
+/* ══ 15. RESPONSIVE ═════════════════════════════════════════ */
+@media (max-width: 1200px) {
+  .mes_body { grid-template-columns: 1fr 24vh; }
+}
+@media (max-width: 1000px) {
+  .mes_body { grid-template-columns: 1fr; }
+  .mes_detail_panel { position: static; max-height: none; }
+  .mes_resumen { display: none; }
+}
+@media (max-width: 768px) {
+  .mes_toolbar { flex-wrap: wrap; }
+  .mes_titulo_mes { font-size: var(--fz_m2); }
+  .mes_cell { min-height: 5vh; }
+  .mes_actionbar { flex-wrap: wrap; }
+  .mes_ab_left, .mes_ab_right { width: 100%; }
+}
+@media (max-width: 600px) {
+  .mes_field_row3 { grid-template-columns: 1fr 1fr; }
+  .mes_cell { min-height: 4vh; padding: .2vh; }
+  .mes_cell_num { font-size: var(--fz_s2); width: 1.4vh; height: 1.4vh; }
+  .mes_sugerencias { gap: .2vh; }
+  .mes_sug_btn span { display: none; }
+}
+@media (max-width: 420px) {
+  .mes_modal, .mes_modal_confirm { width: 99vw; border-radius: 10px; }
+  .mes_field_row3 { grid-template-columns: 1fr; }
+  .mes_dias_semana { font-size: var(--fz_s2); }
+}
