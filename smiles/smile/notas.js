@@ -36,11 +36,11 @@ const _clearCache = () => {
 
 // ── Colores del tema ─────────────────────────────────────────
 const COLORES = [
-  { id: 'Cielo',  hex: '#0EBEFF', bg: 'rgba(14,190,255,.15)', tx: 'var(--tx)' },
-  { id: 'Dulce',  hex: '#FF5C69', bg: 'rgba(255,92,105,.15)', tx: 'var(--tx)' },
-  { id: 'Paz',    hex: '#29C72E', bg: 'rgba(41,199,46,.15)', tx: 'var(--tx)' },
-  { id: 'Mora',   hex: '#7000FF', bg: 'rgba(112,0,255,.15)', tx: 'var(--tx)' },
-  { id: 'Futuro', hex: '#21273B', bg: 'rgba(33,39,59,.25)', tx: 'var(--tx)' },
+  { id: 'Cielo',  hex: '#0EBEFF', bg: 'rgba(14,190,255,.12)', tx: 'var(--tx)' },
+  { id: 'Rosa',   hex: '#FF5C93', bg: 'rgba(255,92,147,.12)', tx: 'var(--tx)' },
+  { id: 'Verde',  hex: '#10B981', bg: 'rgba(16,185,129,.12)', tx: 'var(--tx)' },
+  { id: 'Morado', hex: '#8B5CF6', bg: 'rgba(139,92,246,.12)', tx: 'var(--tx)' },
+  { id: 'Naranja',hex: '#F59E0B', bg: 'rgba(245,158,11,.12)', tx: 'var(--tx)' },
 ];
 
 // ── Render ───────────────────────────────────────────────────
