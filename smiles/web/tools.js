@@ -1,4 +1,4 @@
-import './watermark.css';
+import './tools.css';
 import $ from 'jquery';
 import { app, ipdev } from '../wii.js';
 import { Notificacion } from '../widev.js';
