@@ -5,15 +5,15 @@ export let lanzamiento = 2026;
 export let ipdev = import.meta.env.VITE_DEV;
 export let autor = '@wilder.taype';
 export let link = 'https://wtaype.github.io/';
-export let version = 'v11';
+export let version = 'v13';
 
 /** Actualizar main luego esto, pero si es mucho, solo esto. (1)
-git tag v11 -m "Version v11" ; git push origin v11 
+git tag v13 -m "Version v13" ; git push origin v13 
 
 //  ACTUALIZACIÓN PRINCIPAL ONE DEV [START] (2)
-git add . ; git commit -m "Actualizacion Principal v11.10.10" ; git push origin main
+git add . ; git commit -m "Actualizacion Principal v13.10.10" ; git push origin main
 
 // En caso de emergencia, para actualizar el Tag existente. (3)
-git tag -d v11 ; git tag v11 -m "Version v11 actualizada" ; git push origin v11 --force
+git tag -d v13 ; git tag v13 -m "Version v13 actualizada" ; git push origin v13 --force
  ACTUALIZACION TAG[END]  */ 
 
