@@ -1,7 +1,7 @@
-import $ from 'jquery';
 import { app } from '../wii.js';
-import { Notificacion } from '../widev.js';
+import $ from 'jquery';
 import { wiPath, wiFade } from './rutadev.js';
+import { Notificacion } from '../widev.js';
 
 class WiRutas {
   constructor() {
@@ -10,7 +10,6 @@ class WiRutas {
     this.modActual = null;
     this.cargand = false;       // flag navegación
     this.precach = new Set();   // rutas precargadas
-    this.PAGE    = 'web';       // carpeta de páginas
     this.HOME    = 'inicio';    // ruta por defecto
     this.main    = '#wimain';   // contenedor principal
   }
@@ -24,12 +23,12 @@ class WiRutas {
     let norm = wiPath.limpiar(ruta);
     if (norm === '/') norm = `/${this.HOME}`;
 
-    const cargar = this.rutas[norm] ?? (() => import(`../${this.PAGE}/404.js`));
+    const cargar = this.rutas[norm] ?? (() => import(`../web/404.js`));
     try {
-      // Cleanup módulo anterior
       this.modActual?.cleanup?.();
 
-      const mod   = typeof cargar === 'function' ? await cargar() : cargar;
+      const mod = typeof cargar === 'function' ? await cargar() : cargar;
+      if (typeof cargar === 'function') this.rutas[norm] = mod; // cache module
       const html  = await mod.render();
       const titulo = `${norm.slice(1).replace(/^(\w)/, c => c.toUpperCase()) || 'Inicio'} - ${app}`;
 
@@ -61,19 +60,24 @@ class WiRutas {
 
   init() {
     const rActual = wiPath.actual === '/' ? `/${this.HOME}` : wiPath.limpiar(wiPath.actual);
-    this.marcarNav(rActual); // Nav activo desde ruta actual — sin parpadeo
+    this.marcarNav(rActual);
 
-    // Clicks en nav
     $(document).on('click', '.nv_item', (e) => {
       e.preventDefault();
       const pag = $(e.currentTarget).data('page');
       this.navigate(pag === this.HOME ? '/' : `/${pag}`);
     });
-    
+
+    // Prefetch on hover — preloads module for instant navigation
+    $(document).on('mouseenter', '.nv_item[data-page]', (e) => {
+      const pag = $(e.currentTarget).data('page');
+      this.prefetch(pag === this.HOME ? '/' : `/${pag}`);
+    });
+
     window.addEventListener('popstate', (e) => {
       this.navigate(e.state?.ruta || wiPath.actual, false);
-    }); // Botón atrás/adelante    
-    this.navigate(wiPath.actual, false); // Carga inicial
+    });
+    this.navigate(wiPath.actual, false);
   }
 }
 export const rutas = new WiRutas();

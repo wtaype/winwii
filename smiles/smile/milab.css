@@ -1,0 +1,382 @@
+/* ══ WRAP ══════════════════════════════════════════════ */
+.mlab_wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  padding: 2vh 1vh 6vh;
+}
+
+/* ══ HERO ══════════════════════════════════════════════ */
+.mlab_hero {
+  text-align: center;
+  padding: 4vh 2vh 2vh;
+}
+.mlab_tag {
+  display: inline-flex;
+  align-items: center;
+  gap: .5vh;
+  padding: .4vh 1.2vh;
+  background: var(--bg4);
+  border: 1px solid var(--brd);
+  border-radius: 5vh;
+  font-size: var(--fz_s4);
+  font-weight: 600;
+  color: var(--mco);
+  margin-bottom: 1.5vh;
+}
+.mlab_title {
+  font-size: var(--fz_x1);
+  font-weight: 800;
+  color: var(--tx);
+  margin-bottom: .8vh;
+}
+.mlab_grad {
+  background: linear-gradient(135deg, var(--mco), var(--Mora));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.mlab_sub {
+  font-size: var(--fz_m2);
+  color: var(--tx3);
+  margin: 0;
+}
+
+/* ══ COMPARE GRID ═══════════════════════════════════════ */
+.mlab_compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2vh;
+  align-items: start;
+}
+
+/* ══ PANEL ══════════════════════════════════════════════ */
+.mlab_panel {
+  background: var(--wb);
+  border: 1px solid var(--brd);
+  border-radius: 2vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.mlab_panel_head {
+  padding: 2vh 2.5vh;
+  display: flex;
+  align-items: center;
+  gap: 1.2vh;
+  border-bottom: 1px solid var(--brd);
+}
+.mlab_panel_head h2 {
+  font-size: var(--fz_m3);
+  font-weight: 700;
+  color: var(--tx1);
+  margin: 0;
+}
+.mlab_panel_head h2 small {
+  font-size: var(--fz_s4);
+  color: var(--tx3);
+  font-weight: 400;
+}
+.mlab_head_10 { background: color-mix(in srgb, #FF5C69 8%, var(--wb)); }
+.mlab_head_11 { background: color-mix(in srgb, var(--mco) 8%, var(--wb)); }
+
+.mlab_ver_chip {
+  padding: .3vh .9vh;
+  border-radius: 5vh;
+  font-size: var(--fz_s3);
+  font-weight: 700;
+  background: #FF5C69;
+  color: #fff;
+  flex-shrink: 0;
+}
+.mlab_chip_new { background: var(--mco); }
+
+/* ══ SECTION ════════════════════════════════════════════ */
+.mlab_section {
+  padding: 2vh 2.5vh;
+  border-bottom: 1px solid var(--bg4);
+}
+.mlab_section:last-child { border-bottom: none; }
+
+.mlab_sec_tit {
+  font-size: var(--fz_m2);
+  font-weight: 700;
+  color: var(--tx1);
+  display: flex;
+  align-items: center;
+  gap: .6vh;
+  margin-bottom: .5vh;
+  flex-wrap: wrap;
+}
+.mlab_sec_tit i { color: var(--mco); }
+.mlab_sec_sub {
+  font-size: var(--fz_s4);
+  color: var(--tx3);
+  margin-bottom: 1.5vh;
+}
+.mlab_sec_sub code {
+  background: var(--bg4);
+  padding: .15vh .5vh;
+  border-radius: .4vh;
+  font-size: var(--fz_s3);
+  color: var(--mco);
+  font-family: monospace;
+}
+
+/* ══ DEMO AREA ══════════════════════════════════════════ */
+.mlab_demo {
+  display: flex;
+  flex-direction: column;
+  gap: .8vh;
+}
+.mlab_card {
+  padding: 1.2vh 1.5vh;
+  background: var(--bg3);
+  border: 1px solid var(--brd);
+  border-radius: 1vh;
+  font-size: var(--fz_m1);
+  font-weight: 500;
+  color: var(--tx1);
+  display: flex;
+  align-items: center;
+  gap: .8vh;
+  transition: all var(--tr_m);
+}
+.mlab_card i { color: var(--mco); flex-shrink: 0; }
+.mlab_card_exit { border-left: 3px solid var(--Dulce); }
+
+/* ══ ENTRY COUNTER ══════════════════════════════════════ */
+.mlab_entry_cnt {
+  margin-left: auto;
+  font-size: var(--fz_s3);
+  font-weight: 800;
+  color: var(--mco);
+  background: color-mix(in srgb, var(--mco) 12%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--mco) 25%, var(--brd));
+  padding: .2vh .8vh;
+  border-radius: 5vh;
+  min-width: 3.5vh;
+  text-align: center;
+  transition: background var(--tr_f), transform var(--tr_f);
+}
+
+/* ══ OBSERVER STATUS ════════════════════════════════════ */
+.mlab_obs_status {
+  margin-left: auto;
+  font-size: var(--fz_s3);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: .4vh;
+  color: var(--Paz);
+  transition: color var(--tr_f);
+  flex-shrink: 0;
+}
+.mlab_obs_status i { font-size: .55em; }
+.mlab_obs_off { color: var(--error); }
+
+/* ══ DELAY ICONS ════════════════════════════════════════ */
+.mlab_ico_a { color: #29C72E !important; }
+.mlab_ico_b { color: #FFB800 !important; }
+.mlab_ico_c { color: #FF5C69 !important; }
+
+/* ══ COUNTER ════════════════════════════════════════════ */
+.mlab_counter {
+  display: flex;
+  align-items: center;
+  gap: 1.2vh;
+  padding: 1.8vh;
+  background: var(--bg4);
+  border-radius: 1.2vh;
+  border: 1px solid var(--brd);
+}
+.mlab_num {
+  font-size: var(--fz_x1);
+  font-weight: 800;
+  color: var(--mco);
+  font-family: var(--ff_G);
+  min-width: 6vh;
+  text-align: center;
+}
+.mlab_cnt_lbl {
+  font-size: var(--fz_m1);
+  color: var(--tx3);
+}
+.mlab_cnt_lbl strong { color: var(--tx1); }
+
+/* ══ BADGES ═════════════════════════════════════════════ */
+.mlab_new {
+  font-size: var(--fz_s2);
+  font-weight: 700;
+  padding: .2vh .6vh;
+  background: var(--mco);
+  color: var(--txa);
+  border-radius: .4vh;
+  margin-left: .4vh;
+  vertical-align: middle;
+}
+.mlab_ok { color: var(--Paz); font-weight: 600; font-size: var(--fz_s4); }
+.mlab_ok i { margin-right: .3vh; }
+
+/* ══ LISTA ══════════════════════════════════════════════ */
+.mlab_list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .6vh;
+}
+.mlab_list li {
+  display: flex;
+  align-items: flex-start;
+  gap: .7vh;
+  font-size: var(--fz_m1);
+  margin: 0;
+  padding: .5vh .8vh;
+  border-radius: .6vh;
+  line-height: 1.5;
+}
+.mlab_list code {
+  background: var(--bg4);
+  padding: .1vh .4vh;
+  border-radius: .3vh;
+  font-size: var(--fz_s3);
+  color: var(--mco);
+  font-family: monospace;
+}
+.mlab_good { background: color-mix(in srgb, var(--Paz) 10%, transparent); color: var(--tx1); }
+.mlab_good i { color: var(--Paz); margin-top: .3vh; flex-shrink: 0; }
+.mlab_bad  { background: color-mix(in srgb, var(--error) 10%, transparent); color: var(--tx1); }
+.mlab_bad i  { color: var(--error); margin-top: .3vh; flex-shrink: 0; }
+
+/* ══ BOTÓN DISCONNECT ═══════════════════════════════════ */
+.mlab_btn_disc {
+  margin-top: 1.2vh;
+  width: 100%;
+  padding: 1vh;
+  background: color-mix(in srgb, var(--error) 12%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--error) 30%, var(--brd));
+  border-radius: .8vh;
+  color: var(--error);
+  font-size: var(--fz_m1);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--tr_f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6vh;
+}
+.mlab_btn_disc:hover:not(:disabled) {
+  background: var(--error);
+  color: #fff;
+  transform: translateY(-.2vh);
+}
+.mlab_btn_done {
+  background: color-mix(in srgb, var(--Paz) 12%, var(--bg)) !important;
+  border-color: var(--Paz) !important;
+  color: var(--Paz) !important;
+}
+
+/* ══ TABLA DIFERENCIAS ══════════════════════════════════ */
+.mlab_diff_wrap {
+  background: var(--wb);
+  border: 1px solid var(--brd);
+  border-radius: 2vh;
+  overflow: hidden;
+}
+.mlab_diff_head {
+  padding: 1.8vh 2.5vh;
+  font-size: var(--fz_m3);
+  font-weight: 700;
+  color: var(--tx1);
+  border-bottom: 1px solid var(--brd);
+  display: flex;
+  align-items: center;
+  gap: .8vh;
+  background: var(--bg3);
+}
+.mlab_diff_head i { color: var(--mco); }
+.mlab_diff_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.mlab_diff_table th,
+.mlab_diff_table td {
+  padding: 1vh 1.8vh;
+  text-align: left;
+  font-size: var(--fz_m1);
+  border-bottom: 1px solid var(--bg4);
+  vertical-align: middle;
+}
+.mlab_diff_table tbody tr:last-child td { border-bottom: none; }
+.mlab_diff_table thead th {
+  font-weight: 700;
+  color: var(--tx3);
+  font-size: var(--fz_s3);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  background: var(--bg3);
+  white-space: nowrap;
+}
+.mlab_th_feat   { width: 26%; }
+.mlab_th_old    { width: 22%; }
+.mlab_th_new    { width: 22%; }
+.mlab_th_impact { width: 30%; }
+
+.mlab_diff_table code {
+  background: var(--bg4);
+  padding: .15vh .5vh;
+  border-radius: .3vh;
+  font-size: var(--fz_s3);
+  color: var(--mco);
+  font-family: monospace;
+}
+.mlab_td_ok { color: var(--Paz); font-weight: 500; }
+.mlab_td_ok i { margin-right: .35vh; }
+.mlab_td_no { color: var(--error); opacity: .85; }
+.mlab_td_no i { margin-right: .35vh; }
+.mlab_td_na { color: var(--tx3); }
+.mlab_tr_compat td { background: var(--bg3); }
+.mlab_td_impact { font-size: var(--fz_s4); font-weight: 600; }
+.mlab_imp_hi { color: var(--mco); }
+.mlab_imp_md { color: var(--Dulce); }
+.mlab_imp_lo { color: var(--tx3); }
+.mlab_imp_ok { color: var(--Paz); }
+
+.mlab_tr_sep td {
+  background: color-mix(in srgb, var(--mco) 8%, var(--bg3));
+  color: var(--mco);
+  font-size: var(--fz_s4);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  padding: .8vh 1.8vh;
+  border-bottom: 1px solid color-mix(in srgb, var(--mco) 20%, var(--brd));
+}
+.mlab_tr_sep td i { margin-right: .5vh; }
+.mlab_diff_table td code {
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: var(--fz_s3);
+  line-height: 1.6;
+  background: none;
+  padding: 0;
+  color: inherit;
+  white-space: pre-line;
+}
+.mlab_td_sub {
+  font-size: var(--fz_s3);
+  color: var(--tx3);
+  font-weight: 400;
+}
+.mlab_td_note {
+  color: var(--tx3);
+  font-style: italic;
+}
+
+/* ══ RESPONSIVE ═════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .mlab_compare { grid-template-columns: 1fr; }
+  .mlab_diff_table th:last-child,
+  .mlab_diff_table td:last-child { display: none; }
+}

@@ -1,239 +1,217 @@
 import './smile.css';
 import $ from 'jquery';
 import { auth, db } from './firebase.js';
-import { collection, setDoc, doc, query, where, onSnapshot, deleteDoc, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, wicopy, wiTip, getls, Saludar } from '../widev.js';
+import { onAuthStateChanged } from 'firebase/auth';
+import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { Notificacion, wicopy, wiTip, getls } from '../widev.js';
 import { app } from '../wii.js';
 
-// ============================================================
-// PARTE 1 · ESTADO Y CACHÉ
-// ============================================================
-let msgs = [], unsub = null, pendiente = null;
-const CACHE  = 'wi_notas_cache';
-const wi     = () => getls('wiSmile') || {};
-const _save  = d  => { try { localStorage.setItem(CACHE, JSON.stringify(d)); } catch (_) {} };
-const _cache = () => { try { return JSON.parse(localStorage.getItem(CACHE) || '[]'); } catch (_) { return []; } };
+const waitAuth = () => new Promise(r => {
+  if (auth.currentUser) return r(auth.currentUser);
+  const unsub = onAuthStateChanged(auth, u => { unsub(); r(u); });
+});
 
-// ============================================================
-// PARTE 2 · RENDER
-// ============================================================
-export const render = () => {
-  const { nombre = '', usuario = '', email = '' } = wi();
-  const display = nombre || usuario || email || auth.currentUser?.email || '';
+let mensajes = [];
+let eliminarId = null;
 
-  return `
+export const render = () => `
   <div class="smile_container">
-
     <div class="smile_header">
-      <div class="header_info">
-        <img src="/logo.webp" alt="${app}" class="header_avatar" />
-        <div class="header_text">
-          <h1>Mis Notas</h1>
-          <p>${Saludar()} <strong>${display}</strong></p>
-        </div>
+      <div class="header_left">
+        <h1><i class="fas fa-inbox"></i> Mis mensajes</h1>
+        <p id="smileUser"></p>
       </div>
-      <div class="header_status">
-        <span class="status_dot"></span>
-        <span class="status_text">Cargando...</span>
-      </div>
-    </div>
-
-    <div class="smile_chat" id="smileChat">
-      ${_htmlList(_cache())}
-    </div>
-
-    <div class="smile_input">
-      <div class="input_wrapper">
-        <textarea id="nuevoMensaje"
-          placeholder="Escribe una nota."
-          rows="1" maxlength="500"></textarea>
-        <span class="char_count" id="charCount">0/500</span>
-      </div>
-      <button id="btnEnviar" disabled ${wiTip('Enviar · Enter')}>
-        <i class="fas fa-paper-plane"></i>
+      <button class="btn_actualizar" id="btnActualizar">
+        <i class="fas fa-sync-alt"></i>
+        <span>Actualizar</span>
       </button>
     </div>
 
-    <div class="modal_overlay" id="modalEliminar">
-      <div class="modal_content">
-        <i class="fas fa-trash-alt"></i>
-        <h3>¿Eliminar nota?</h3>
-        <p>Esta acción no se puede deshacer</p>
-        <div class="modal_actions">
-          <button class="btn_cancelar" id="btnCancelar">Cancelar</button>
-          <button class="btn_confirmar" id="btnConfirmar">Eliminar</button>
-        </div>
+    <div class="smile_table_wrapper">
+      <table class="smile_table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Título</th>
+            <th>Para</th>
+            <th>Fecha</th>
+            <th>Vistas</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="smileTableBody">
+          <tr><td colspan="6" class="loading_td"><i class="fas fa-spinner fa-pulse"></i> Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal_overlay" id="modalEliminar">
+    <div class="modal_content">
+      <div class="modal_icon"><i class="fas fa-trash-alt"></i></div>
+      <h3>¿Eliminar mensaje?</h3>
+      <p>Esta acción no se puede deshacer</p>
+      <div class="modal_actions">
+        <button class="btn_modal_cancelar" id="btnCancelar"><i class="fas fa-times"></i> Cancelar</button>
+        <button class="btn_modal_eliminar" id="btnConfirmar"><i class="fas fa-trash"></i> Eliminar</button>
       </div>
     </div>
+  </div>
+`;
 
-  </div>`;
+export const init = async () => {
+  console.log(`✅ Smile de ${app}`);
+  
+  const user = await waitAuth();
+  if (!user) return Notificacion('Debes iniciar sesión', 'error'), window.location.hash = '#/auth?mode=login';
+
+  const wi = getls('wiSmile');
+  $('#smileUser').html(`<i class="fas fa-user"></i> ${wi?.usuario || auth.currentUser.email} • ${wi?.email || auth.currentUser.email}`);
+
+  $(document).on('click.sm', '#btnActualizar', cargarMensajes)
+    .on('click.sm', '#btnCancelar, #modalEliminar', (e) => $(e.target).is('#btnCancelar, #modalEliminar') && cerrarModal())
+    .on('click.sm', '#btnConfirmar', confirmarEliminar)
+    .on('click.sm', '.btn_abrir', (e) => window.open($(e.currentTarget).data('url'), '_blank'))
+    .on('click.sm', '.btn_copiar', (e) => wicopy($(e.currentTarget).data('url'), e.currentTarget, '¡Copiado!'))
+    .on('click.sm', '.btn_eliminar_msg', (e) => { eliminarId = $(e.currentTarget).data('id'); $('#modalEliminar').addClass('show'); });
+
+  await cargarMensajes();
 };
 
-// ============================================================
-// PARTE 3 · LÓGICA: INIT · EVENTOS · FIRESTORE · HELPERS
-// ============================================================
-export const init = () => {
-  const { email } = wi();
+async function cargarMensajes() {
+  const uid = auth.currentUser?.uid;
+  if (!uid) return;
 
-  // Usar wiSmile.email primero, luego auth como fallback
-  const userEmail = email || auth.currentUser?.email;
-  if (!userEmail) {
-    Notificacion('Inicia sesión primero', 'error');
-    return (window.location.hash = '#/auth?mode=login');
-  }
+  const $btn = $('#btnActualizar');
+  $btn.find('i').addClass('fa-spin').end().prop('disabled', true);
 
-  // ── EVENTOS ──
-  $(document)
-    .on('input.sm', '#nuevoMensaje', function () {
-      $('#charCount').text(`${$(this).val().length}/500`);
-      $('#btnEnviar').prop('disabled', !$(this).val().trim());
-      $(this).css('height', 'auto').css('height', Math.min(this.scrollHeight, 150) + 'px');
-    })
-    .on('keydown.sm', '#nuevoMensaje', e => {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); _enviar(userEmail); }
-    })
-    .on('click.sm',  '#btnEnviar',   () => _enviar(userEmail))
-    .on('click.sm',  '.msg_item',    function (e) {
-      if ($(e.target).closest('.btn_delete').length) return;
-      const msg = msgs.find(m => m.id === $(this).data('id'));
-      if (!msg) return;
-      wicopy(msg.nota, this, '¡Copiado! <i class="fas fa-check-circle"></i>');
-      $(this).addClass('copied');
-      setTimeout(() => $(this).removeClass('copied'), 800);
-    })
-    .on('click.sm',  '.btn_delete',  function (e) {
-      e.stopPropagation();
-      pendiente = $(this).data('id');
-      $('#modalEliminar').addClass('show');
-    })
-    .on('click.sm',  '#btnCancelar, #modalEliminar', e => {
-      if ($(e.target).is('#btnCancelar, #modalEliminar')) {
-        $('#modalEliminar').removeClass('show');
-        pendiente = null;
-      }
-    })
-    .on('click.sm', '#btnConfirmar', _eliminar);
-
-  // ── TIEMPO REAL ──
-  unsub = onSnapshot(
-    query(collection(db, 'notas'), where('email', '==', userEmail)),
-    { includeMetadataChanges: false },
-    snap => {
-      msgs = snap.docs
-        .map(d => ({ id: d.id, ...d.data() }))
-        .sort((a, b) => (b.fecha?.seconds || 0) - (a.fecha?.seconds || 0));
-      _save(msgs);
-      $('#smileChat').html(_htmlList(msgs));
-      _status(true);
-    },
-    err => {
-      console.error('❌', err);
-      _status(false);
-      const cache = _cache();
-      if (cache.length) {
-        msgs = cache;
-        $('#smileChat').html(_htmlList(msgs));
-        Notificacion('Caché local 📦', 'warning', 2000);
-      } else {
-        $('#smileChat').html(_empty('fa-wifi-slash', 'Sin conexión', 'Verifica tu internet'));
-      }
-    }
-  );
-};
-
-// ── ENVIAR ──
-const _enviar = async (email) => {
-  const $ta   = $('#nuevoMensaje');
-  const nota  = $ta.val().trim();
-  if (!nota) return;
-
-  const { usuario = '', nombre = '' } = wi();
-  const ts  = Date.now();
-  const id  = `m${ts}`;
-
-  const $btn = $('#btnEnviar').prop('disabled', true)
-    .html('<i class="fas fa-spinner fa-pulse"></i>');
+  mostrarSkeleton();
 
   try {
-    await setDoc(doc(db, 'notas', id), {
-      id,
-      nota,
-      email,
-      usuario: nombre || usuario || email,
-      fecha: serverTimestamp()
+    const q = query(collection(db, 'wiLoves'), where('uid', '==', uid));
+    const snapshot = await getDocs(q);
+    mensajes = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    mensajes.sort((a, b) => {
+      const fA = a.creado?.toDate?.() || a.creado?.seconds ? new Date(a.creado.seconds * 1000) : new Date(a.creado || 0);
+      const fB = b.creado?.toDate?.() || b.creado?.seconds ? new Date(b.creado.seconds * 1000) : new Date(b.creado || 0);
+      return fB - fA;
     });
-    $ta.val('').css('height', 'auto').trigger('focus');
-    $('#charCount').text('0/500');
-  } catch (e) {
-    console.error('❌', e);
-    Notificacion('Error al guardar', 'error');
-  } finally {
-    $btn.prop('disabled', false).html('<i class="fas fa-paper-plane"></i>');
-  }
-};
 
-// ── ELIMINAR ──
-const _eliminar = async () => {
-  if (!pendiente) return;
-  const id = pendiente;
-  pendiente = null;
+    renderMensajes(mensajes);
+    console.log(`📬 ${mensajes.length} mensajes`);
+  } catch (error) {
+    console.error('❌', error);
+    $('#smileTableBody').html(`
+      <tr><td colspan="6" class="error_td">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Error: ${error.message}</p>
+        <button class="btn_reintentar" onclick="location.reload()"><i class="fas fa-redo"></i> Reintentar</button>
+      </td></tr>
+    `);
+  } finally {
+    $btn.find('i').removeClass('fa-spin').end().prop('disabled', false);
+  }
+}
+
+function mostrarSkeleton() {
+  $('#smileTableBody').html(Array(5).fill(0).map(() => `
+    <tr class="skeleton_row">
+      <td><div class="sk_badge"></div></td>
+      <td><div class="sk_line sk_title"></div></td>
+      <td><div class="sk_line sk_text"></div></td>
+      <td><div class="sk_line sk_date"></div></td>
+      <td><div class="sk_line sk_vistas"></div></td>
+      <td><div class="td_actions">${Array(3).fill('<div class="sk_btn"></div>').join('')}</div></td>
+    </tr>
+  `).join(''));
+}
+
+function renderMensajes(lista) {
+  if (!lista.length) {
+    return $('#smileTableBody').html(`
+      <tr><td colspan="6" class="empty_td">
+        <div class="empty_icon"><i class="fas fa-inbox"></i></div>
+        <h3>No tienes mensajes</h3>
+        <p>Crea tu primer mensaje en <a href="#/crear">Crear mensaje</a></p>
+      </td></tr>
+    `);
+  }
+
+  const iconos = { amor: 'fa-heart', amistad: 'fa-user-friends', saludo: 'fa-gift', declaracion: 'fa-comment-dots', aniversario: 'fa-calendar-star', carta: 'fa-envelope' };
+  
+  $('#smileTableBody').html(lista.map(m => {
+    const tipo = m.plantilla || 'amor';
+    const icono = iconos[tipo] || 'fa-envelope';
+    const titulo = esc(m.nombre || m.de || 'Sin título');
+    const para = esc(m.para || 'Alguien especial');
+    const url = `${location.origin}/?${m.id}`;
+
+    return `
+      <tr data-id="${m.id}">
+        <td><span class="badge_tipo ${tipo}"><i class="fas ${icono}"></i> ${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</span></td>
+        <td class="td_titulo">${titulo}</td>
+        <td class="td_para">${para}</td>
+        <td class="td_fecha">${formatFecha(m.creado)}</td>
+        <td class="td_vistas">${m.vistas || 0}</td>
+        <td>
+          <div class="td_actions">
+            <button class="btn_action btn_abrir" data-url="${url}" ${wiTip('Abrir')}><i class="fas fa-external-link-alt"></i></button>
+            <button class="btn_action btn_copiar" data-url="${url}" ${wiTip('Copiar')}><i class="fas fa-link"></i></button>
+            <button class="btn_action btn_eliminar_msg" data-id="${m.id}" ${wiTip('Eliminar')}><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join(''));
+}
+
+function cerrarModal() {
+  eliminarId = null;
   $('#modalEliminar').removeClass('show');
-  $(`.msg_item[data-id="${id}"]`).addClass('deleting');
+}
+
+async function confirmarEliminar() {
+  if (!eliminarId) return;
+  const id = eliminarId;
+  cerrarModal();
+
   try {
-    await deleteDoc(doc(db, 'notas', id));
-    Notificacion('Nota eliminada 🗑️', 'success', 1500);
-  } catch (e) {
-    console.error('❌', e);
-    $(`.msg_item[data-id="${id}"]`).removeClass('deleting');
+    $(`tr[data-id="${id}"]`).addClass('removing');
+    await deleteDoc(doc(db, 'wiLoves', id));
+    setTimeout(() => {
+      mensajes = mensajes.filter(m => m.id !== id);
+      renderMensajes(mensajes);
+    }, 300);
+    Notificacion('Mensaje eliminado 🗑️', 'success');
+  } catch (error) {
+    console.error('❌', error);
+    $(`tr[data-id="${id}"]`).removeClass('removing');
     Notificacion('Error al eliminar', 'error');
   }
-};
+}
 
-// ── HELPERS ──
-const _status  = ok => {
-  $('.status_dot').toggleClass('active', ok).toggleClass('error', !ok);
-  $('.status_text').text(ok ? 'En vivo' : 'Desconectado');
-};
+const esc = (t) => !t ? '' : String(t).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
 
-const _htmlList = list => list?.length
-  ? list.map(m => `
-    <div class="msg_item" data-id="${m.id}" ${wiTip('Click para copiar')}>
-      <div class="msg_content">
-        <p class="msg_texto">${_esc(m.nota).replace(/\n/g, '<br>')}</p>
-        <div class="msg_footer">
-          <span class="msg_fecha">${_fecha(m.fecha)}</span>
-          <i class="fas fa-check-double msg_check"></i>
-        </div>
-      </div>
-      <button class="btn_delete" data-id="${m.id}" ${wiTip('Eliminar')}>
-        <i class="fas fa-trash"></i>
-      </button>
-    </div>`).join('')
-  : _empty('fa-note-sticky', 'Sin notas aún', 'Escribe tu primera nota 👇');
-
-const _empty = (ico, txt, sub) => `
-  <div class="chat_empty">
-    <i class="fas ${ico}"></i>
-    <p>${txt}</p><span>${sub}</span>
-  </div>`;
-
-const _esc = t => String(t || '').replace(/[&<>"']/g, c =>
-  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[c]));
-
-const _fecha = ts => {
-  if (!ts) return 'Ahora';
-  const d  = ts.toDate?.() || new Date((ts.seconds || 0) * 1000);
-  const df = Date.now() - d;
-  const m  = ~~(df / 6e4), h = ~~(df / 36e5), dias = ~~(df / 864e5);
-  if (m   <  1) return 'Ahora';
-  if (m   < 60) return `${m}m`;
-  if (h   < 24) return `${h}h`;
+function formatFecha(ts) {
+  if (!ts) return 'Reciente';
+  let f = ts.toDate?.() || (ts.seconds ? new Date(ts.seconds * 1000) : new Date(ts));
+  if (isNaN(f.getTime())) return 'Reciente';
+  const diff = new Date() - f;
+  const min = Math.floor(diff / 60000);
+  const hrs = Math.floor(diff / 3600000);
+  const dias = Math.floor(diff / 86400000);
+  if (min < 1) return 'Ahora';
+  if (min < 60) return `${min}m`;
+  if (hrs < 24) return `${hrs}h`;
   if (dias < 7) return `${dias}d`;
-  return d.toLocaleDateString('es', { day:'2-digit', month:'short' });
-};
+  if (dias < 30) return `${Math.floor(dias / 7)} sem`;
+  return f.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
+}
 
 export const cleanup = () => {
-  unsub?.();
+  console.log('🧹 Smile');
+  mensajes = [];
+  eliminarId = null;
   $(document).off('.sm');
-  [msgs, unsub, pendiente] = [[], null, null];
 };

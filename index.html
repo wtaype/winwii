@@ -17,8 +17,8 @@
   <meta property="og:description"
     content="Organiza tu semana como un profesional. Horario semanal, notas diarias, tareas y recordatorios en un planificador inteligente y elegante." />
   <title>Winwii - Planificador Semanal Profesional 📅✨</title>
-  <style>
- /* ==================== VARIABLES GLOBALES ==================== */
+<style>
+/* ==================== VARIABLES GLOBALES ==================== */
 :root{
   --fz_s1:clamp(0.625rem,0.8vh,0.7rem);
   --fz_s2:clamp(0.675rem,0.85vh,0.75rem);
@@ -186,12 +186,11 @@
 *{font-family:var(--ff_P);scrollbar-width:thin;scrollbar-color:var(--mco) var(--bg)}
 a{text-decoration:none}
 body{background: var(--bg);}
-#wimain{max-width:95vw;margin:auto;padding:7vh .6vh;min-height:100vh;}
+#wimain{max-width:95vw;margin:auto;padding:1vh .6vh;min-height:100vh;}
 
 /* ==================== ESTILOS ESENCIALES HTML ==================== */
 p{color:var(--tx);font-size:var(--fz_m2);line-height:1.6;margin-bottom:1vh}
 a{color:var(--mco);transition:color var(--tr_f)}
-label{display:block;color:var(--tx1);font-size:var(--fz_m1);font-weight:500;margin-bottom:0.5vh;margin-top:1.5vh}
 input,select,textarea{width:100%;padding:1vh 1.5vh;background:var(--inp);border:1px solid var(--brd);border-radius:0.6vh;color:var(--tx);font-size:var(--fz_m2);transition:all var(--tr_f);outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--mco);box-shadow:0 0 0 3px var(--bg4)}
 input::placeholder,textarea::placeholder{color:var(--tx3)}
@@ -199,7 +198,7 @@ input[type="checkbox"],input[type="radio"]{width:auto;margin-right:0.5vh;accent-
 select{cursor:pointer;background-repeat:no-repeat;background-position:right 1vh center;padding-right:3vh}
 select option{background:var(--wb);color:var(--tx)}
 textarea{resize:vertical;min-height:8vh;font-family:var(--ff_P)}
-button{padding:.3vh 1vh;background:var(--mco);color:var(--txa);border:none;border-radius:0.6vh;font-size:var(--fz_m2);font-weight:500;cursor:pointer;transition:all var(--tr_f)}
+button{padding:.3vh 1vh;background:none;color:var(--txa);border:none;border-radius:0.6vh;font-size:var(--fz_m2);font-weight:500;cursor:pointer;transition:all var(--tr_f)}
 button:hover{transform:translateY(-0.2vh);}
 button:disabled{opacity:0.5;cursor:not-allowed;transform:none}
 ul,ol{margin-left:2.5vh;margin-bottom:1.5vh;color:var(--tx)}
@@ -212,12 +211,10 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 
 /* ==================== UTILIDADES ==================== */
 .txc{text-align:center}
-.dpn, .movil .wilogo{display:none}
+.dpn{display:none}
 .dpc{display:flex;justify-content:center;align-items:center}
 .dpw{display:flex;justify-content:space-between;align-items:center}
 .dpr{display:flex;flex-direction: row; flex-wrap: wrap;}
-.movil *{justify-content: center;}
-.movil .winav,.movil .wiauth{display: flex; flex-direction: column;}
 .dpvc{display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center}
 
 /* ==================== TEMAS ==================== */
@@ -225,6 +222,7 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 .tema{width:var(--fz_l1);height:var(--fz_l1);border-radius:50%;cursor:pointer;transition:all var(--tr_f);border:2px solid transparent;position:relative}
 .tema:hover{transform:scale(1.01);box-shadow:0 0 1vh rgba(0,0,0,0.3)}
 .tema.mtha{border-color:var(--F);box-shadow:0 0 1.5vh rgba(255,255,255,0.6),inset 0 0 0.5vh rgba(255,255,255,0.3);transform:scale(1.01)}
+.skip-link:focus{left:50%;transform:translateX(-50%);top:0}
 .tema[data-ths^="Cielo"]{background:var(--Cielo)}
 .tema[data-ths^="Dulce"]{background:var(--Dulce)}
 .tema[data-ths^="Paz"]{background:var(--Paz)}
@@ -233,7 +231,7 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 #wiTema:hover{transform:translateY(-0.2vh);transition:var(--tr_m)}
 
 /* ==================== HEADER - FOOTER ==================== */
-.wiheader{height:5vh;display:flex;justify-content:space-between;align-items:center;padding:0 2vw;backdrop-filter:blur(8px);z-index:100;position:fixed;width:100%;}
+.wiheader{height:5vh;display:flex;justify-content:space-between;align-items:center;padding:0 2vw;backdrop-filter:blur(8px);z-index:100;position:sticky;top:0;width:100%;}
 .nv_left{display:flex;align-items:center;gap:2vh}
 .wiheader i:not(.active){color:var(--mco)}
 .wilogo{display:flex;align-items:center;gap:0.3vh;font-size:var(--fz_m5);font-weight:700;color:var(--bg2);cursor:pointer;transition:all var(--tr_f)}
@@ -241,22 +239,26 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 .wilogo i{font-size:var(--fz_l1)}
 .wilogo:hover{transform:scale(1.05);filter:drop-shadow(0 0 0.5vh var(--mco))}
 .winav{display:flex;gap:.3vh}
-.nv_item, .wibtn_auth{display:flex;align-items:center;gap:0.4vw;padding:0.7vh 1vw;background:var(--bg1);border-radius:0.8vh;color:var(--tx);text-decoration:none;font-size:var(--fz_m1);font-weight:500;transition:all var(--tr_f);border:1px solid transparent;box-shadow:0.2vh 0 0.3vh rgb(0 0 0 / 5%);}
+.nv_item{display:flex;align-items:center;gap:0.4vw;padding:0.7vh 1vw;background:var(--bg1);border-radius:0.8vh;color:var(--tx);text-decoration:none;font-size:var(--fz_m1);font-weight:500;transition:all var(--tr_f);border:1px solid transparent;box-shadow:0.2vh 0 0.3vh rgb(0 0 0 / 5%);}
+.nv_item img{height:2vh;border-radius:50%;object-fit:cover}
 .nv_item i{font-size:var(--fz_m3)}
 .nv_item.active, .nv_item:hover{background:var(--mco);color:var(--txa);transition: background .99s ease-out, color .3s ease-out;font-weight: 600;box-shadow:0.2vh 0 0.3vh rgb(0 0 0 / 10%)}
 .nv_item.active i, .nv_item:hover i{color:var(--txa);transition: color .6s ease-out}
 .nv_right{display:flex;align-items:center;gap:.5vh}
-.wibtn_auth:hover, .wibtn_auth:hover i{cursor: pointer;}
-.wiauth{display:flex;gap:.5vh;min-width:13.9vw}
-.sesion img{max-width:2.5vh}
-.sesion{display:flex;align-items:center;gap:.8vh;cursor:pointer;background:var(--bg1);border-radius:1.2vh;padding:0.7vh 1vw;font-size:var(--fz_m2);}
-.sesion:hover{transform:translateY(-.2vh);transition:var(--tr_s)}
-.sesion span,.bt_salir span,.bt_salir i{color:var(--tx)}
-.user-avatar{height:80%;box-shadow:var(--bs_m);border-radius:50%}
-.bt_salir{background:var(--bg1);border-radius:1.2vh;border:none;padding:0.7vh 1vw;cursor:pointer}
-.bt_salir:hover{transform:translateY(-.2vh);transition:var(--tr_s);color: var(--txa);}
+.bt_auth{display:flex;align-items:center;gap:0.4vw;padding:0.7vh 1vw;background:var(--bg1);border-radius:0.8vh;color:var(--tx);font-size:var(--fz_m1);font-weight:500;cursor:pointer;transition:all var(--tr_f);border:1px solid transparent;box-shadow:0.2vh 0 0.3vh rgb(0 0 0 / 5%)}
+.bt_auth i{font-size:var(--fz_m3);color:var(--mco)}
+.bt_auth:hover{background:var(--mco);color:var(--txa);font-weight:600;box-shadow:0.2vh 0 0.3vh rgb(0 0 0 / 10%);transform:translateY(-0.2vh)}
+.bt_auth:hover i{color:var(--txa)}
 .foo{width:100%;text-align:center;padding-block:1.5vh 1vh;background:var(--wb);border-radius:1vh 1vh 0 0}
 .foo *{font-size:var(--fz_s2);margin-inline:.3vh;color:var(--tx);}
+
+/* ==================== UTILIDADES EXTRA ==================== */
+.df{display:flex}
+.dfc{display:flex;justify-content:center;align-items:center}
+.dfw{display:flex;justify-content:space-between;align-items:center}
+.dfcc{display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center}
+.mwb{max-width:87vw;margin:auto;width:100%}
+.wib{width:100%}
 
 /* ==================== WIANIMA GLOBAL v12 ==================== */
 .wi_fadeUp,.wi_fadeLeft,.wi_fadeRight,.wi_fadeIn,.wi_scale{opacity:0;transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
@@ -266,11 +268,39 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 .wi_scale{transform:scale(.95)}
 .wi_visible{opacity:1!important;transform:none!important}
 
+.nv_item:focus-visible,.tema:focus-visible,.wibtn_auth:focus-visible,.bt_salir:focus-visible,.wimenu:focus-visible,.btn_primary:focus-visible,.btn_secondary:focus-visible,button:focus-visible{outline:2px solid var(--mco);outline-offset:2px;border-radius:0.6vh}
+
+/* ==================== MOBILE DRAWER ==================== */
+.movil_overlay{position:fixed;inset:0;background:rgba(0,0,0,.12);backdrop-filter:blur(.3vw);z-index:200;opacity:0;pointer-events:none;transition:opacity var(--tr_m)}
+.movil_drawer{position:fixed;top:0;right:0;width:80vw;height:100dvh;background:var(--bg);z-index:201;transform:translateX(100%);transition:transform var(--tr_m);display:flex;flex-direction:column;padding:2vh 0;overflow-y:auto;box-shadow:-1vh 0 3vh rgba(0,0,0,.08)}
+body.movil_open{overflow:hidden}
+body.movil_open .movil_overlay{opacity:1;pointer-events:auto}
+body.movil_open .movil_drawer{transform:translateX(0)}
+.movil_close{color: var(--mco);position:absolute;top:1px;right:2px;font-size:var(--fz_m4);padding:.8vh 1.2vh;background:none;border:none;cursor:pointer}
+.movil_close:hover{color:var(--mco)}
+.movil_logo{text-align:center;padding:3vh 2vh 1vh;font-size:var(--fz_m5);font-weight:700;color:var(--bg2)}
+.movil_logo i{margin-right:.5vh}
+.movil_nav{display:flex;flex-direction:column;margin-top:1vh;padding:0 1vh;text-align:left}
+.movil_nav .nv_item{display:flex;align-items:center;justify-content:flex-start;gap:2vh;padding:2.5vh 2.5vh;color:var(--tx);font-size:var(--fz_m2);font-weight:500;border-bottom:1px solid var(--brd);background:none;border-radius:0;box-shadow:none}
+.movil_nav .nv_item:last-child{border-bottom:none}
+.movil_nav .nv_item i{font-size:var(--fz_l);color:var(--mco);min-width:3vh}
+.movil_nav .nv_item span{font-size:var(--fz_m1)}
+.movil_nav .nv_item.active{color:var(--mco);font-weight:700;background:var(--bg4);border-radius:.6vh}
+.movil_nav .nv_item.active i{color:var(--mco)}
+.movil_divider{height:1px;background:var(--brd);margin:1vh 2.5vh}
+.movil_nav .bt_auth{display:flex;align-items:center;justify-content:flex-start;gap:2.5vh;padding:2.5vh 2.5vh;color:var(--tx);font-size:var(--fz_m2);font-weight:500;border-bottom:1px solid var(--brd);background:none;border-radius:0;box-shadow:none;width:100%;text-align:left;cursor:pointer}
+.movil_nav .bt_auth:last-child{border-bottom:none}
+.movil_nav .bt_auth i{font-size:var(--fz_l1);color:var(--mco);min-width:3vh}
+.movil_nav .bt_auth span{font-size:var(--fz_m2)}
+.movil_nav .bt_auth:hover{background:var(--bg4);border-radius:.6vh}
+.movil_nav .bt_salir{color:var(--error)}
+.movil_nav .bt_salir i{color:var(--error)}
+
 /* ==================== RESPONSIVE ==================== */
 @media (max-width:768px){
 #wimain{padding:0}
-.wiheader{height:auto;padding:1.5vh 4vh 1.5vh 1.5vh;position:relative}
-.winav,.wiauth{display:none}
+.wiheader{height:auto;padding:1.5vh 4vh 1.5vh 1.5vh}
+.winav,.wiauth,.nv_right{display:none}
 .nv_left{justify-content:space-between;width:100%}
 .wilogo{font-size:var(--fz_m4)}
 .winav{gap:1vh}
@@ -325,19 +355,5 @@ blockquote{padding:1.5vh 2vh;margin:2vh 0;background:var(--bg4);border-left:4px 
 </div>
 </body>
 <script>(()=>{const d=document,h=d.documentElement,w=d.querySelector('#wiTema');if(!w)return;const ts=[...w.querySelectorAll('.tema')],m=d.querySelector('meta[name="theme-color"]')||d.head.appendChild(Object.assign(d.createElement('meta'),{name:'theme-color'})),st=t=>{const[n,c]=t.dataset.ths.split('|');h.dataset.theme=n;m.content=c;localStorage.wiTema=t.dataset.ths;ts.forEach(x=>x.classList.toggle('mtha',x===t))};w.addEventListener('click',e=>e.target.matches('.tema')&&st(e.target),{passive:!0});const i=w.querySelector(`[data-ths="${localStorage.wiTema}"]`)||ts[0];i&&st(i)})();</script>
-<script type="module">
-  (() => {
-    const k = 'wiflash', c = localStorage[k], e = ['touchstart', 'scroll', 'click', 'mousemove']; let l = 0; const load = () => {
-      if (l++) return; const h = document.head, css = [
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css',
-        'https://fonts.googleapis.com/css2?family=Rubik:wght@300..900&display=swap',
-        'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap',
-        'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap'
-      ]; css.forEach(u => h.appendChild(Object.assign(document.createElement('link'), { rel: 'stylesheet', href: u })));
-      import('./smiles/main.js'); localStorage[k] = 1
-    };
-    c ? load() : e.forEach(v => addEventListener(v, load, { passive: !0, once: !0 }))
-  })();
-</script>
-
+<script type="module" src="./smiles/main.js" defer></script> 
 </html>

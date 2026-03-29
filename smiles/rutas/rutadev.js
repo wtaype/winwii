@@ -1,12 +1,13 @@
 import $ from 'jquery';
-
 // === RUTA LIMPIA V11 ===
 export const wiPath = {
   limpiar(ruta) {
     const base = import.meta?.env?.BASE_URL || '/';
     const guar = sessionStorage.ghPath;
     if (guar) { sessionStorage.removeItem('ghPath'); return guar.replace(/^\/wiiprime(\/v\d+)?/, '') || '/'; }
-    return base !== '/' && ruta?.startsWith(base) ? ruta.slice(base.length - 1) || '/' : ruta || '/';
+    let r = base !== '/' && ruta?.startsWith(base) ? ruta.slice(base.length - 1) || '/' : ruta || '/';
+    if (r !== '/' && !r.startsWith('/')) r = '/' + r;
+    return r;
   },
   poner(ruta, titulo = '') {
     history.pushState({ ruta }, titulo, ruta);
@@ -16,10 +17,15 @@ export const wiPath = {
   get actual() { return this.limpiar(location.pathname); }
 };
 
-// === FADE SUAVE V11 ===
-export const wiFade = async (sel, html, dur = 120) => {
-  const $el = $(sel);
-  await $el.animate({ opacity: 0 }, dur).promise();
-  $el.html(html);
-  await $el.animate({ opacity: 1 }, dur).promise();
+// === FADE SUAVE V12 ===
+export const wiFade = async (sel, html, dur = 80) => {
+  const el = $(sel)[0]; if (!el) return;
+  el.style.willChange = 'opacity';
+  el.style.transition = `opacity ${dur}ms ease`;
+  el.style.opacity = 0;
+  await new Promise(r => setTimeout(r, dur));
+  el.innerHTML = html;
+  el.style.opacity = 1;
+  await new Promise(r => setTimeout(r, dur));
+  el.style.transition = ''; el.style.willChange = '';
 };

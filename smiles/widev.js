@@ -1,5 +1,12 @@
 import $  from 'jquery'; 
 
+// wiCode v1.0 - Bloque de código con copy + highlight __________________________
+export const wiCode = (sel) => {
+  $(sel).each(function() {
+    $(this).wrap('<div class="wiCode-box"/>');
+  });
+};
+
 // OBSERVER v12_________________________________
 export const wiVista = (sel, fn, opts = {}) => {
   const { stagger = 0, anim = '', threshold = 0.1, once = true } = opts;
@@ -25,13 +32,27 @@ export const wiSpin = (btn, act = true, txt = '') => {
   }
 };
 
+// SCROLL SPY V10.0_________________________________
+export const wiScroll = (ids, navSel, opts = {}) => {
+  const { margin = '-20% 0px -70% 0px', cls = 'active' } = opts;
+  const obs = new IntersectionObserver(
+    es => es.filter(e => e.isIntersecting).forEach(e => {
+      $(navSel).removeClass(cls);
+      $(`${navSel}[href="#${e.target.id}"]`).addClass(cls);
+    }),
+    { rootMargin: margin }
+  );
+  ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+  return obs;
+};
+
 // AUTH SIGNAL v2.0_________________________________
 const bus = new Set();
 export const wiAuth = Object.assign((load, render) => bus.add(async () => { await load(true); render(); }), {
   on(fn)   { bus.add(fn); },
   emit(wi) { bus.forEach(fn => { try { fn(wi); } catch(e) { console.error('wiAuth:', e); } }); },
   login(wi, h = 24) { savels('wiSmile', wi, h); this.emit(wi); },
-  logout() { const k = ['wiflash','wiTema'].map(c => [c, localStorage.getItem(c)]); localStorage.clear(); k.forEach(([c, v]) => v && localStorage.setItem(c, v)); this.emit(null); },
+  logout(keep = []) { removels.except(keep); this.emit(null); },
   get user() { return getls('wiSmile'); },
   get logged() { return !!this.user?.usuario; }
 });
@@ -97,11 +118,16 @@ export function getls(clave) {
   } catch(e) { console.error('egt:', e); localStorage.removeItem(clave); return null; }
 }
 
-// REMOVE LOCAL v10.2_________________________________
+// REMOVE LOCAL v10.3_________________________________
 export function removels(...claves) {
   claves.flat().flatMap(c => typeof c === 'string' ? c.split(/[,\s]+/).filter(Boolean) : c)
     .forEach(clave => localStorage.removeItem(clave));
 }
+removels.except = (keep = []) => {
+  const saved = keep.map(k => [k, localStorage.getItem(k)]);
+  localStorage.clear();
+  saved.forEach(([k, v]) => v !== null && localStorage.setItem(k, v));
+}; 
 // TOOLTIP V11.0_________________________________
 export function wiTip(elmOrTxt, txt, tipo = 'top', tiempo = 1800) {
   if (!wiTip.CSS) {

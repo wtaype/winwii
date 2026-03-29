@@ -2,7 +2,7 @@
 export let id = 'winwii'
 export let app = 'Winwii'
 export let lanzamiento = 2026;
-export let ipdev = '192.168.18.62';
+export let ipdev = import.meta.env.VITE_DEV;
 export let autor = '@wilder.taype';
 export let link = 'https://wtaype.github.io/';
 export let version = 'v11';

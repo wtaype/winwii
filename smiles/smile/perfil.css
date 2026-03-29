@@ -1,0 +1,182 @@
+/* ==================== WRAP ==================== */
+.prf_wrap{
+  margin: 0 auto;
+  padding: 2vh 1vh 4vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5vh;
+}
+
+/* ==================== HERO ==================== */
+.prf_hero{
+  display: flex;
+  align-items: center;
+  gap: 2.5vh;
+  background: var(--wb);
+  border: 1px solid var(--brd);
+  border-radius: 2vh;
+  padding: 3vh 3.5vh;
+}
+.prf_av_wrap{
+  position: relative;
+  flex-shrink: 0;
+}
+.prf_av{
+  width: 9vh;
+  height: 9vh;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--mco);
+  display: block;
+}
+.prf_av_ring{
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px dashed var(--mco);
+  opacity: .35;
+  animation: prf_spin 12s linear infinite;
+}
+@keyframes prf_spin{ to{ transform:rotate(360deg) } }
+.prf_hero_info{ flex: 1; min-width: 0; }
+.prf_fullname{
+  font-size: var(--fz_m5);
+  font-weight: 700;
+  color: var(--tx1);
+  margin-bottom: .3vh;
+}
+.prf_username{
+  font-size: var(--fz_m2);
+  color: var(--tx3);
+  margin-bottom: .8vh;
+}
+.prf_username i{ color: var(--mco); margin-right: .3vh; }
+.prf_rol_chip{
+  display: inline-flex;
+  align-items: center;
+  gap: .4vh;
+  padding: .3vh 1vh;
+  background: color-mix(in srgb, var(--mco) 12%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--mco) 25%, var(--brd));
+  border-radius: 5vh;
+  font-size: var(--fz_s4);
+  font-weight: 600;
+  color: var(--mco);
+}
+
+/* ==================== GRID ==================== */
+.prf_grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2vh;
+}
+
+/* ==================== CARD ==================== */
+.prf_card{
+  background: var(--wb);
+  border: 1px solid var(--brd);
+  border-radius: 1.8vh;
+  padding: 2.5vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.prf_card_tit{
+  font-size: var(--fz_m3);
+  font-weight: 700;
+  color: var(--tx1);
+  margin-bottom: 2vh;
+  display: flex;
+  align-items: center;
+  gap: .7vh;
+}
+.prf_card_tit i{ color: var(--mco); }
+
+/* ==================== FORM ==================== */
+.prf_card label{
+  margin-top: 1.5vh;
+  font-size: var(--fz_m1);
+  color: var(--tx1);
+  font-weight: 500;
+  margin-bottom: .4vh;
+}
+.prf_btn{
+  margin-top: 2.5vh;
+  padding: 1.2vh;
+  background: var(--mco);
+  color: var(--txa);
+  border: none;
+  border-radius: .8vh;
+  font-size: var(--fz_m2);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--tr_f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6vh;
+}
+.prf_btn:hover{ transform: translateY(-.2vh); filter: brightness(1.08); }
+.prf_btn:disabled{ opacity: .6; cursor: not-allowed; transform: none; }
+
+/* ==================== INFO ROWS ==================== */
+.prf_row{
+  display: flex;
+  align-items: center;
+  gap: 1vh;
+  padding: 1.2vh 0;
+  border-bottom: 1px solid var(--bg4);
+}
+.prf_row:last-child{ border-bottom: none; }
+.prf_lbl{
+  display: flex;
+  align-items: center;
+  gap: .5vh;
+  font-size: var(--fz_m1);
+  color: var(--tx3);
+  min-width: 7vh;
+  flex-shrink: 0;
+}
+.prf_lbl i{ color: var(--mco); width: 1.5vh; text-align: center; }
+.prf_val{
+  font-size: var(--fz_m2);
+  color: var(--tx);
+  font-weight: 500;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.prf_rol_val{
+  color: var(--mco);
+  font-weight: 600;
+}
+.prf_uid_row{ align-items: center; }
+.prf_uid_val{
+  font-size: var(--fz_s4);
+  color: var(--tx3);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: monospace;
+}
+.prf_copy{
+  background: var(--bg4);
+  border: 1px solid var(--brd);
+  border-radius: .6vh;
+  padding: .5vh .8vh;
+  color: var(--tx1);
+  cursor: pointer;
+  font-size: var(--fz_s4);
+  flex-shrink: 0;
+  transition: all var(--tr_f);
+}
+.prf_copy:hover{ background: var(--mco); color: var(--txa); transform: translateY(-.1vh); }
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width:768px){
+  .prf_grid{ grid-template-columns: 1fr; }
+  .prf_hero{ flex-direction: column; text-align: center; padding: 2.5vh; }
+  .prf_username, .prf_rol_chip{ justify-content: center; }
+}
