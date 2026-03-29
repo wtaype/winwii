@@ -4,7 +4,7 @@ import { rutas } from './rutas/ruta.js';
 
 ['inicio','extraer','watermark','horario','tareas','planes','semanal','mes','logros','acerca'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/${pg}.js`)));
 ['descubre','login','smile','perfil', 'milab','mensajes'].forEach(pg => rutas.register(`/${pg}`, () => import(`./smile/${pg}.js`)));
-import('./header.js'); import('./footer.js')
+import('./header.js');
 rutas.init();
 
 wiSmart({
