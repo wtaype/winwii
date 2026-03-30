@@ -34,13 +34,13 @@ const _clearCache = () => {
   localStorage.removeItem(CACHE_TIME_KEY);
 };
 
-// ── Colores del tema ─────────────────────────────────────────
+// ── Colores del tema (Premium) ───────────────────────────────
 const COLORES = [
-  { id: 'Cielo',  hex: '#0EBEFF', bg: 'rgba(14,190,255,.12)', tx: 'var(--tx)' },
-  { id: 'Rosa',   hex: '#FF5C93', bg: 'rgba(255,92,147,.12)', tx: 'var(--tx)' },
-  { id: 'Verde',  hex: '#10B981', bg: 'rgba(16,185,129,.12)', tx: 'var(--tx)' },
-  { id: 'Morado', hex: '#8B5CF6', bg: 'rgba(139,92,246,.12)', tx: 'var(--tx)' },
-  { id: 'Naranja',hex: '#F59E0B', bg: 'rgba(245,158,11,.12)', tx: 'var(--tx)' },
+  { id: 'Cielo',  hex: '#0EBEFF', bg: 'rgba(14,190,255,.12)', tx: 'var(--tx)', rgb: '14,190,255' },
+  { id: 'Dulce',  hex: '#FF5C93', bg: 'rgba(255,92,147,.12)', tx: 'var(--tx)', rgb: '255,92,147' },
+  { id: 'Paz',    hex: '#10B981', bg: 'rgba(16,185,129,.12)', tx: 'var(--tx)', rgb: '16,185,129' },
+  { id: 'Mora',   hex: '#8B5CF6', bg: 'rgba(139,92,246,.12)', tx: 'var(--tx)', rgb: '139,92,246' },
+  { id: 'Sol',    hex: '#F59E0B', bg: 'rgba(245,158,11,.12)', tx: 'var(--tx)', rgb: '245,158,11' },
 ];
 
 // ── Render ───────────────────────────────────────────────────
