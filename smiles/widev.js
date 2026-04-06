@@ -51,7 +51,7 @@ const bus = new Set();
 export const wiAuth = Object.assign((load, render) => bus.add(async () => { await load(true); render(); }), {
   on(fn)   { bus.add(fn); },
   emit(wi) { bus.forEach(fn => { try { fn(wi); } catch(e) { console.error('wiAuth:', e); } }); },
-  login(wi, h = 24) { savels('wiSmile', wi, h); this.emit(wi); },
+  login(wi, h = 144) { savels('wiSmile', wi, h); this.emit(wi); },
   logout(keep = []) { removels.except(keep); this.emit(null); },
   get user() { return getls('wiSmile'); },
   get logged() { return !!this.user?.usuario; }

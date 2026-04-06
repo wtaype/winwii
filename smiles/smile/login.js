@@ -12,7 +12,7 @@ export { auth, onAuthStateChanged, signOut };
 // ==================== CONFIG ====================
 const cfg = { db: 'smiles', rol: 'smile' };
 let modal = 'si', link = 'no', restablecer = 'no', login = 'si', registrar = 'si';
-let pagina = '/mensajes'; // 'actual' = quedarse, '/proyectos', '/smile', '/'
+let pagina = '/notas'; // 'actual' = quedarse, '/proyectos', '/smile', '/'
 let registrando = false;
 
 const err = {
