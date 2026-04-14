@@ -1,6 +1,6 @@
 import './descubre.css';
 import $ from 'jquery';
-import { app } from '../wii.js';
+import { app } from '../../wii.js';
 
 // 🎨 HTML
 export const render = () => `
