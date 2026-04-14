@@ -30,12 +30,12 @@ const wi = wiAuth.user; wi ? personal(wi) : publico();
 // SALIR_________________________________
 const KEEP_KEYS = ['wiTema', 'wiSmart', 'wiFresh'];
 $(document).on('click', '.bt_salir', async () => {
-  const { salir } = await import('./smile/login.js');
+  const { salir } = await import('./web/login.js');
   salir(KEEP_KEYS);
 });
 
 // LOGIN / REGISTRAR — Firebase se carga solo al hacer click
 $(document).on('click', '.bt_auth', async function () {
-  const { abrirLogin } = await import('./smile/login.js');
+  const { abrirLogin } = await import('./web/login.js');
   abrirLogin($(this).hasClass('registrar') ? 'registrar' : 'login');
 });

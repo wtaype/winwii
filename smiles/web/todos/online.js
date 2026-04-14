@@ -1,7 +1,7 @@
 import './online.css';
 import $ from 'jquery';
-import { app } from '../wii.js';
-import { Notificacion, Mensaje } from '../widev.js';
+import { app } from '../../wii.js';
+import { Notificacion, Mensaje } from '../../widev.js';
 
 export const render = () => `
   <div class="online_container mwb">

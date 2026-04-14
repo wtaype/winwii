@@ -4,9 +4,9 @@ import Sortable from 'sortablejs';
 import { Calendar } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { db } from '../smile/firebase.js';
+import { db } from '../firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiAuth} from '../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiAuth} from '../../widev.js';
 
 const CACHE_KEY='wii_horario_v4', NOTA_KEY='wii_horario_notas_v3', TAR_CACHE='wii_tareas_v1', COL='horario', TAR_COL='tareas';
 

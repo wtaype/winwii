@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import './perfil.css';
-import { auth, db } from './firebase.js';
+import { auth, db } from '../firebase.js';
 import { doc, updateDoc } from 'firebase/firestore';
-import { getls, savels, wicopy, Mensaje, wiTip, Saludar } from '../widev.js';
-import { rutas } from '../rutas/ruta.js';
+import { getls, savels, wicopy, Mensaje, wiTip, Saludar } from '../../widev.js';
+import { rutas } from '../../rutas/ruta.js';
 
 const wi = () => getls('wiSmile') || {};
 

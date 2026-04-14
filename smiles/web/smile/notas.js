@@ -1,10 +1,10 @@
 import './notas.css';
 import $ from 'jquery';
-import { auth, db } from './firebase.js';
+import { auth, db } from '../firebase.js';
 import { collection, setDoc, doc, query, where, getDocs, deleteDoc, serverTimestamp, limit } from 'firebase/firestore';
-import { Notificacion, wiTip, getls, Saludar } from '../widev.js';
-import { rutas } from '../rutas/ruta.js';
-import { app } from '../wii.js';
+import { Notificacion, wiTip, getls, Saludar } from '../../widev.js';
+import { rutas } from '../../rutas/ruta.js';
+import { app } from '../../wii.js';
 
 // ── Estado ───────────────────────────────────────────────────
 let notas = [], editando = null, saveTimer = null, _onVis = null;

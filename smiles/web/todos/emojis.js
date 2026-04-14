@@ -1,7 +1,7 @@
 import './emojis.css';
 import $ from 'jquery';
-import { Notificacion, getls, savels, wiTip, Saludar } from '../widev.js';
-import { app } from '../wii.js';
+import { Notificacion, getls, savels, wiTip, Saludar } from '../../widev.js';
+import { app } from '../../wii.js';
 
 /* ══════════════════════════════════════════════════════════════
    EMOJIS v1.0 — Selector de Emojis + Notepad

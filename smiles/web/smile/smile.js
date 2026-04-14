@@ -1,10 +1,10 @@
 import './smile.css';
 import $ from 'jquery';
-import { auth, db } from './firebase.js';
+import { auth, db } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
 import { collection, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { Notificacion, wicopy, wiTip, getls } from '../widev.js';
-import { app } from '../wii.js';
+import { Notificacion, wicopy, wiTip, getls } from '../../widev.js';
+import { app } from '../../wii.js';
 
 const waitAuth = () => new Promise(r => {
   if (auth.currentUser) return r(auth.currentUser);

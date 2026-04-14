@@ -1,10 +1,10 @@
 import './mensajes.css';
 import $ from 'jquery';
-import { auth, db } from './firebase.js';
+import { auth, db } from '../firebase.js';
 import { collection, setDoc, doc, query, where, getDocs, deleteDoc, serverTimestamp, limit } from 'firebase/firestore';
-import { Notificacion, wicopy, wiTip, savels, getls, Saludar } from '../widev.js';
-import { rutas } from '../rutas/ruta.js';
-import { app } from '../wii.js';
+import { Notificacion, wicopy, wiTip, savels, getls, Saludar } from '../../widev.js';
+import { rutas } from '../../rutas/ruta.js';
+import { app } from '../../wii.js';
 
 // ── Estado ───────────────────────────────────────────────────
 let msgs = [], pendiente = null, enviando = false, refreshTimer = null, _onVis = null;

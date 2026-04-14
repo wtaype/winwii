@@ -1,6 +1,6 @@
 import './login.css';
 import $ from 'jquery';
-import { auth, db } from '../smile/firebase.js';
+import { auth, db } from './firebase.js';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile,
          sendEmailVerification, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'firebase/auth';
 import { setDoc, getDoc, getDocs, doc, collection, query, where, serverTimestamp } from 'firebase/firestore';

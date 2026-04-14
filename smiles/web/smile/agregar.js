@@ -1,8 +1,8 @@
 import './agregar.css';
 import $ from 'jquery';
-import { db, auth } from './firebase.js';
+import { db, auth } from '../firebase.js';
 import { collection, addDoc, getDocs, deleteDoc, doc, query, where, serverTimestamp } from 'firebase/firestore';
-import { wiTip, getls, Notificacion, wiSpin } from '../widev.js';
+import { wiTip, getls, Notificacion, wiSpin } from '../../widev.js';
 
 const COL_AUDIO = 'wiAudios';
 const COL_IMG   = 'wiImg';
