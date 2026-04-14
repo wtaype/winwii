@@ -3,7 +3,7 @@ import { getls, wiSmart} from './widev.js';
 import { rutas } from './rutas/ruta.js';
 
 ['inicio','acerca'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/${pg}.js`)));
-['extraer','planificar','emojis','diario','semanal','mensual','tools','online','preview',,'horario','tareas','planes','semanal','mes','logros'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/todos/${pg}.js`)));
+['win','extraer','planificar','emojis','diario','semanal','mensual','tools','online','preview',,'horario','tareas','planes','semanal','mes','logros'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/todos/${pg}.js`)));
 ['descubre','login','smile','perfil', 'notas','mensajes'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/smile/${pg}.js`)));
 import('./header.js');
 rutas.init();

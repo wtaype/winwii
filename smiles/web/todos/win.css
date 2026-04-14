@@ -1,0 +1,228 @@
+/* ==========================================================================
+   WIN PRO v18.0 — "The Footered Tools Edition"
+   ✨ White Header Actions · Footer Tools · Professional Industrial
+   🚀 wiSpin Sync · 100% Organizado
+   ========================================================================== */
+
+.es_container {
+    display: flex;
+    gap: 0;
+    width: 100%;
+    height: 90vh;
+    background: var(--bg);
+    overflow: hidden;
+}
+
+/* --- COLUMNA LEFT (69%) --- EL EDITOR DEFINITIVO --- */
+.es_left {
+    flex: 0 0 69%;
+    background: #fff;
+    border-right: 1px solid var(--brd);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.es_page { width: 100%; flex: 1; display: flex; flex-direction: column; background: #fff; }
+
+/* Header Blanco y Acciones Pro */
+.es_page_header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vh 3vh;
+    background: var(--wb);
+    border-bottom: 1px solid var(--brd);
+    z-index: 100;
+}
+
+.es_header_left { 
+    flex: 1; 
+    display: flex; 
+    align-items: center; 
+    margin-right: 2vh;
+}
+
+.es_in_title_h {
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-size: var(--fz_m2);
+    font-weight: 950;
+    color: var(--tx1);
+    text-align: left;
+    outline: none;
+    transition: 0.3s;
+}
+.es_in_title_h:focus { color: var(--mco); }
+
+.es_header_right { display: flex; gap: 1vh; align-items: center; }
+
+.es_btn_pro {
+    padding: 0.8vh 2vh;
+    border-radius: 0.8vh;
+    border: 1px solid transparent;
+    background: var(--bg3);
+    color: var(--tx2);
+    font-size: var(--fz_s3);
+    font-weight: 800;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 1vh;
+}
+.es_btn_pro:hover { background: var(--bg4); color: var(--mco); }
+.es_btn_pro.save { background: var(--mco); color: #fff; }
+.es_btn_pro.del { color: var(--error); background: rgba(255,0,0,0.05); }
+
+/* wiSpin Animation */
+.wiSpin { animation: es_spin 1s linear infinite; display: inline-block; }
+@keyframes es_spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Cuerpo del Editor */
+.es_page_content {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--wb);
+    padding: 2vh 5vh 1vh;
+}
+
+.es_editor {
+    width: 100%;
+    flex: 1;
+    font-size: var(--fz_m4);
+    line-height: 2.2;
+    outline: none;
+    font-style: normal; /* Normal por defecto */
+    color: #333;
+    min-height: 65vh;
+}
+
+/* Footer de Herramientas de Contenido */
+.es_page_footer {
+    padding: 1.5vh 3vh;
+    background: var(--bg4);
+    border-top: 1px solid var(--brd);
+    display: flex;
+    justify-content: center;
+    gap: 1.2vh;
+    z-index: 10;
+}
+
+.es_tool_btn {
+    width: 4.5vh;
+    height: 4.5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1vh;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--tx3);
+    font-size: var(--fz_m2);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.es_tool_btn:hover { background: var(--bg4); color: var(--mco); }
+.es_tool_btn.active { background: var(--mco); color: #fff; box-shadow: 0 0.5vh 1.5vh var(--bg5); }
+
+/* --- COLUMNA RIGHT (30.5%) --- */
+.es_right { flex: 0 0 30.5%; }
+
+.es_sidebar_final {
+    background: var(--wb);
+    height: 100%;
+    padding: 2vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.es_sidebar_actions {
+    display: flex;
+    gap: 1vh;
+    margin-bottom: 2vh;
+}
+
+.es_btn_new_final {
+    flex: 1;
+    padding: 1.5vh;
+    background: var(--mco);
+    color: #fff;
+    border: none;
+    border-radius: 1vh;
+    font-weight: 900;
+    font-size: var(--fz_m2);
+    cursor: pointer;
+}
+
+.es_btn_refresh {
+    width: 5vh;
+    height: 5.5vh;
+    background: var(--bg3);
+    color: var(--tx2);
+    border: 1px solid var(--brd);
+    border-radius: 1vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.es_btn_refresh:hover { background: var(--bg4); color: var(--mco); }
+.es_btn_refresh.syncing i { animation: es_spin 1s linear infinite; color: var(--mco); }
+
+.es_search_final {
+    width: 100%;
+    padding: 1.2vh 1.8vh;
+    background: var(--inp);
+    border: 1px solid var(--brd);
+    border-radius: 1vh;
+    margin-bottom: 2vh;
+    color: var(--tx);
+}
+
+.es_list_items_final { flex: 1; overflow-y: auto; }
+
+.es_item_final {
+    padding: 1.8vh 2vh;
+    background: var(--bg4);
+    border-radius: 1vh;
+    margin-bottom: 1vh;
+    border: 1px solid transparent;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s;
+}
+.es_item_final.active { background: var(--wb); border-color: var(--mco); box-shadow: 0 0.5vh 1.5vh rgba(0,0,0,0.05); }
+
+.item_info_final strong { display: block; color: var(--tx1); font-size: var(--fz_m1); }
+.item_info_final span { font-size: 10px; color: var(--tx3); text-transform: uppercase; }
+
+.item_acts_final {
+    position: absolute;
+    right: 1vh;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 0.5vh;
+    opacity: 0;
+    transition: 0.3s;
+}
+.es_item_final:hover .item_acts_final { opacity: 1; }
+
+.btn_sub {
+    width: 3.2vh;
+    height: 3.2vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.6vh;
+    background: #fff;
+    border: 1px solid var(--brd);
+    font-size: 10px;
+}
+.btn_sub:hover { color: var(--mco); border-color: var(--mco); }
+
+.wn_dot_final { width: 0.8vh; height: 0.8vh; border-radius: 50%; background: var(--success); }
