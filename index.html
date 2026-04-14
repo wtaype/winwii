@@ -52,16 +52,27 @@
       --0: #000;
       --D: #ddd;
       --G: #374151;
+
       --success: #3cd741;
       --error: #ff3849;
       --warning: #ffa726;
       --info: #00a8e6;
+
       --offline: #ddd;
       --Cielo: #0EBEFF;
       --Dulce: #FF5C69;
       --Paz: #29C72E;
+      --Oro: #FFDA34;
       --Mora: #7000FF;
       --Futuro: #21273B;
+      /* SmileBeneficios */
+      --sm_azul: #37a1dd;
+      --sm_amarillo: #FFD101;
+      --sm_rojo: #fe413b;
+      --sm_azul_d: #1d7fb8;
+      --sm_azul_l: #d0ecf9;
+      --sm_grad: linear-gradient(135deg, #37a1dd 0%, #1d7fb8 100%);
+      --sm_grad_y: linear-gradient(135deg, #FFD101 0%, #f5a623 100%);
     }
 
     :root[data-theme="Cielo"] {
@@ -139,6 +150,31 @@
       --bg8: #FFF;
     }
 
+    :root[data-theme="Oro"] {
+      --bg: #fff8d1;
+      --wb: #fffde8;
+      --tx: #000;
+      --tx1: #1a1500;
+      --tx2: #332b00;
+      --tx3: #665500;
+      --txa: #000;
+      --txe: #000;
+      --hv: #f0cc00;
+      --hva: #c9a800;
+      --mco: #FFDA34;
+      --mbg: #facc00;
+      --brd: #ffe066;
+      --inp: #fffef5;
+      --bg1: #ffffff42;
+      --bg2: #FFDA34;
+      --bg3: #fffde8;
+      --bg4: rgba(255, 218, 52, 0.1);
+      --bg5: rgba(255, 218, 52, 0.2);
+      --bg6: rgba(255, 243, 176, 0.5);
+      --bg7: #FFF;
+      --bg8: #FFF;
+    }
+
     :root[data-theme="Mora"] {
       --bg: #e4ccff;
       --wb: #f4ebff;
@@ -212,11 +248,32 @@
       background: var(--bg);
     }
 
+    .ad_empty {
+      text-align: center;
+      padding: 5vh 2vh;
+      color: var(--tx3);
+      font-size: var(--fz_m1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1vh;
+    }
+
+    .ad_empty i {
+      font-size: 4vh;
+      opacity: .3;
+    }
+
     #wimain {
       max-width: 95vw;
       margin: auto;
-      padding: 1vh .6vh;
+      padding: 1vh 4vw;
       min-height: 100vh;
+    }
+
+    #wimain:has(.ini_wrap) {
+      max-width: 100%;
+      padding: 0;
     }
 
     /* ==================== ESTILOS ESENCIALES HTML ==================== */
@@ -321,7 +378,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 2vh 0;
+      margin: 1vh 0;
       background: var(--wb)
     }
 
@@ -452,6 +509,10 @@
       background: var(--Futuro)
     }
 
+    .tema[data-ths^="Oro"] {
+      background: var(--Oro)
+    }
+
     #wiTema:hover {
       transform: translateY(-0.2vh);
       transition: var(--tr_m)
@@ -500,6 +561,15 @@
       font-size: var(--fz_l1)
     }
 
+    .wilogo_img {
+      height: var(--fz_l1);
+      width: var(--fz_l1);
+      object-fit: contain;
+      border-radius: 0;
+      display: inline-block;
+      vertical-align: middle
+    }
+
     .wilogo:hover {
       transform: scale(1.05);
       filter: drop-shadow(0 0 0.5vh var(--mco))
@@ -530,6 +600,20 @@
       height: 2vh;
       border-radius: 50%;
       object-fit: cover
+    }
+
+    .nv_avatar_ini {
+      height: 2.5vh;
+      width: 2.5vh;
+      border-radius: 50%;
+      background: var(--mco);
+      color: var(--txa);
+      font-size: var(--fz_s4);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
     }
 
     .nv_item i {
@@ -934,9 +1018,8 @@
         </a>
       </nav>
     </div><!--LEFT: Logo+Navegación-->
-    <div class="nv_right">
-      <div class="wiauth"></div><!--RIGHT: Auth+Navegación-->
-      <div class="wimenu dpn"><i class="fas fa-bars"></i></div>
+    <div class="nv_right"></div><!--RIGHT: Auth+Navegación-->
+    <div class="wimenu dpn"><i class="fas fa-bars"></i></div>
   </header>
   <main id="wimain"></main>
   <div id="wiTema">

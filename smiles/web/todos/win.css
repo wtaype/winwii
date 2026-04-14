@@ -11,6 +11,7 @@
     height: 90vh;
     background: var(--bg);
     overflow: hidden;
+    position: relative;
 }
 
 /* --- COLUMNA LEFT (69%) --- EL EDITOR DEFINITIVO --- */
@@ -226,3 +227,68 @@
 .btn_sub:hover { color: var(--mco); border-color: var(--mco); }
 
 .wn_dot_final { width: 0.8vh; height: 0.8vh; border-radius: 50%; background: var(--success); }
+
+/* Boton de Menu (Trigger para el Drawer Derecho) */
+.es_btn_menu {
+    display: none;
+    width: 4.5vh;
+    height: 4.5vh;
+    background: var(--bg3);
+    color: var(--mco);
+    border: 1px solid var(--brd);
+    border-radius: 1vh;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: var(--fz_m2);
+}
+
+/* 📱 RESPONSIVE - MOBILE CONTENT FIRST */
+@media (max-width: 1024px) {
+    .es_btn_menu { display: flex; }
+    .es_left { flex: 0 0 100%; }
+    
+    .es_right {
+        position: absolute;
+        top: 0;
+        right: -100%; /* Drawer desde la DERECHA */
+        width: 85%;
+        max-width: 320px;
+        height: 100%;
+        z-index: 1000;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+    }
+    
+    .es_container.menu-open .es_right { right: 0; }
+    
+    /* Overlay para cerrar */
+    .es_overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.3);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s;
+        z-index: 999;
+    }
+    .es_container.menu-open .es_overlay { opacity: 1; pointer-events: auto; }
+
+    .es_page_header { padding: 1vh 2vh; }
+    .es_page_content { padding: 2vh 4vh; }
+    
+    .es_btn_pro span { display: none; }
+    .es_btn_pro { padding: 1vh 1.5vh; }
+    
+    .es_in_title_h { font-size: var(--fz_m3); }
+    .es_editor { font-size: var(--fz_m2); padding-bottom: 5vh; }
+    
+    .es_page_footer {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding: 1.2vh 2vh;
+        -webkit-overflow-scrolling: touch;
+    }
+    .es_tool_btn { flex: 0 0 5vh; }
+}

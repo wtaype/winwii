@@ -6,9 +6,9 @@ import { Notificacion, getls, wiAuth, wiTip, wiSpin } from '../../widev.js';
 import { rutas } from '../../rutas/ruta.js';
 
 /* ══════════════════════════════════════════════════════════════
-   WIN v20.0 — "Real-time Sync & Auto-Navigation"
-   🚀 Immediate Sidebar Update · Save on Switch · Optimized Auto-save
-   📝 Colección: wiWin · 100% Pro Industrial
+   WIN v22.0 — "Right Drawer & Content First"
+   🚀 Content top/first · Sidebar Right Drawer · Mobile Optimized
+   📝 Colección: wiWin · 100% Pro Industrial Responsive
    ══════════════════════════════════════════════════════════════ */
 
 let docs = [], sel = null, bus = '', saveTimer = null, _onVis = null, loading = true, isPub = false;
@@ -38,61 +38,32 @@ const _guardar = async (manual = false) => {
     const u = wi(), $btn = $('#btnS2'), tit = $('.es_in_title_h').val().trim() || 'Untitled', cnt = $('.es_editor').html();
     if (!manual && sel.titulo === tit && sel.contenido === cnt) return;
     
-    // Actualización rápida local
     sel.titulo = tit; sel.contenido = cnt; _save(docs);
-    
     if (manual) wiSpin($btn, true, 'Guardando');
-    if (isPub) { if (manual) setTimeout(() => { wiSpin($btn, false, 'Guardado'); setTimeout(() => $btn.html('<i class="fas fa-save"></i> Guardar'), 1500); }, 600); return; }
+    if (isPub) { if (manual) setTimeout(() => { wiSpin($btn, false, 'Guardado'); setTimeout(() => $btn.html('<i class="fas fa-save"></i> <span>Guardar</span>'), 1500); }, 600); return; }
 
     try {
         const docId = sel._fsId;
         const dataToSave = { 
-            id: sel.id,
-            titulo: sel.titulo,
-            contenido: sel.contenido,
-            email: u.email,
-            usuario: u.usuario || 'Public',
-            fecha: sel.fecha || serverTimestamp(),
-            fechaActualizado: serverTimestamp(),
-            pin: sel.pin || false
+            id: sel.id, titulo: sel.titulo, contenido: sel.contenido, email: u.email,
+            usuario: u.usuario || 'Public', fecha: sel.fecha || serverTimestamp(),
+            fechaActualizado: serverTimestamp(), pin: sel.pin || false
         };
-        
         await setDoc(doc(db, COL, docId), dataToSave);
-        if (manual) { 
-            Notificacion('Sincronización Exitosa ✨', 'success', 800);
-            wiSpin($btn, false, 'Guardado');
-        }
+        if (manual) { Notificacion('Sincronización Exitosa ✨', 'success', 800); wiSpin($btn, false, 'Guardado'); }
     } catch (e) { 
-        if (manual) {
-            console.error("Save Error:", e);
-            Notificacion('Error al guardar', 'error');
-            wiSpin($btn, false, 'Reintentar');
-        }
+        if (manual) { console.error("Save Error:", e); Notificacion('Error al guardar', 'error'); wiSpin($btn, false, 'Reintentar'); }
     } finally {
-        if (manual) setTimeout(() => { if ($('#btnS2').length) $('#btnS2').html('<i class="fas fa-save"></i> Guardar'); }, 2000);
+        if (manual) setTimeout(() => { if ($('#btnS2').length) $('#btnS2').html('<i class="fas fa-save"></i> <span>Guardar</span>'); }, 2000);
     }
 };
 
 const _nuevo = async () => {
     const u = wi(), ts = Date.now(), id = `win${ts}`;
-    const nuevo = { 
-        _fsId: id, 
-        id: id, 
-        titulo: '', 
-        contenido: '', 
-        pin: false, 
-        email: u.email || 'guest', 
-        usuario: u.usuario || 'Public', 
-        fecha: serverTimestamp(), 
-        fechaActualizado: serverTimestamp() 
-    };
+    const nuevo = { _fsId: id, id: id, titulo: '', contenido: '', pin: false, email: u.email || 'guest', usuario: u.usuario || 'Public', fecha: serverTimestamp(), fechaActualizado: serverTimestamp() };
     docs.unshift(nuevo); sel = nuevo; _save(docs); _render(); $('.es_in_title_h').focus();
-    if (!isPub) { 
-        try { 
-            const dataToSave = { ...nuevo }; delete dataToSave._fsId;
-            await setDoc(doc(db, COL, id), dataToSave); 
-        } catch (e) { console.error("New Doc Error:", e); } 
-    }
+    if (!isPub) { try { const dataToSave = { ...nuevo }; delete dataToSave._fsId; await setDoc(doc(db, COL, id), dataToSave); } catch (e) {} }
+    $('.es_container').removeClass('menu-open');
 };
 
 const _borrar = async (id, btn = null) => {
@@ -125,7 +96,6 @@ const _checkTools = () => {
     });
 };
 
-// ── Rendering ──
 const _renderList = () => {
     const items = docs.filter(d => (d.titulo||'').toLowerCase().includes(bus.toLowerCase()));
     $('.es_list_items_final').html(items.map(d => `
@@ -153,8 +123,9 @@ const _renderEditor = () => {
                     <input type="text" class="es_in_title_h" placeholder="Escribir el título..." value="${sel.titulo || ''}" spellcheck="false">
                 </div>
                 <div class="es_header_right">
-                    <button class="es_btn_pro save" id="btnS2"><i class="fas fa-save" id="iconSync"></i> Guardar</button>
-                    <button class="es_btn_pro del" id="btnD2" ${wiTip('Eliminar permanentemente')}><i class="fas fa-trash-alt"></i> Eliminar</button>
+                    <button class="es_btn_pro save" id="btnS2"><i class="fas fa-save" id="iconSync"></i> <span>Guardar</span></button>
+                    <button class="es_btn_pro del" id="btnD2" ${wiTip('Eliminar permanentemente')}><i class="fas fa-trash-alt"></i> <span>Eliminar</span></button>
+                    <button class="es_btn_menu" id="toggleMenu" ${wiTip('Historial')}><i class="fas fa-history"></i></button>
                 </div>
             </div>
             <div class="es_page_content">
@@ -171,48 +142,44 @@ const _renderEditor = () => {
 const _render = () => { if (!$('.es_container').length) $('#wimain').html(render()); _renderEditor(); _renderList(); };
 
 export const render = () => {
-    return `<div class="es_container"><div class="es_left"></div><div class="es_right">
-        <div class="es_sidebar_final">
-            <div class="es_sidebar_actions">
-                <button class="es_btn_new_final" id="btnN1">+ Nuevo Win</button>
-                <button class="es_btn_refresh" id="btnSync" ${wiTip('Sync Firestore')}><i class="fas fa-sync-alt"></i></button>
+    return `<div class="es_container">
+        <div class="es_overlay"></div>
+        <div class="es_left"></div>
+        <div class="es_right">
+            <div class="es_sidebar_final">
+                <div class="es_sidebar_actions">
+                    <button class="es_btn_new_final" id="btnN1">+ Nuevo Win</button>
+                    <button class="es_btn_refresh" id="btnSync" ${wiTip('Sync Firestore')}><i class="fas fa-sync-alt"></i></button>
+                </div>
+                <input type="text" class="es_search_final" placeholder="Buscar documentos...">
+                <div class="es_list_items_final"></div>
+                <div style="margin-top:auto; font-size:10px; opacity:0.5; display:flex; align-items:center; gap:5px;">
+                    <div class="wn_dot_final"></div> ${isPub ? 'Offline - Local Mode' : 'Online - wiWin Cloud'}
+                </div>
             </div>
-            <input type="text" class="es_search_final" placeholder="Buscar documentos...">
-            <div class="es_list_items_final"></div>
-            <div style="margin-top:auto; font-size:10px; opacity:0.5; display:flex; align-items:center; gap:5px;">
-                <div class="wn_dot_final"></div> ${isPub ? 'Offline - Local Mode' : 'Online - wiWin Cloud'}
-            </div>
-        </div></div></div>`;
+        </div>
+    </div>`;
 };
 
 export const init = async () => {
     cleanup(); const u = wi(); isPub = !u.email;
     docs = _get(); if (docs.length) { loading = false; _auto(); } else { _render(); }
-    _cargar(u, true);
-
-    $(document)
+    _cargar(u, true); $(document)
         .on('click.es', '.es_tool_btn[data-cmd]', function() { document.execCommand($(this).data('cmd')); $('.es_editor').focus(); _checkTools(); })
         .on('input.es', '.es_editor, .es_in_title_h', function() { 
-            if (sel) {
-                sel.titulo = $('.es_in_title_h').val().trim() || 'Untitled';
-                sel.contenido = $('.es_editor').html();
-                _save(docs);
-                if ($('.es_in_title_h').is(':focus')) _renderList(); 
-            }
-            clearTimeout(saveTimer); 
-            saveTimer = setTimeout(_guardar, 30000); // Autoguardado más ágil (30s)
+            if (sel) { sel.titulo = $('.es_in_title_h').val().trim(); sel.contenido = $('.es_editor').html(); _save(docs); if ($('.es_in_title_h').is(':focus')) _renderList(); }
+            clearTimeout(saveTimer); saveTimer = setTimeout(_guardar, 30000);
         })
         .on('click.es', '#btnS2', () => _guardar(true))
         .on('click.es', '#btnSync', () => _cargar(wi()))
         .on('click.es', '#btnD2, .btnDel', function(e) { e.stopPropagation(); _borrar($(this).data('id') || sel._fsId, this); })
         .on('click.es', '.btnPin', function(e) { e.stopPropagation(); _togglePin($(this).data('id')); })
         .on('click.es', '#btnN1, #btnS1', _nuevo)
+        .on('click.es', '#toggleMenu, .es_overlay', () => $('.es_container').toggleClass('menu-open'))
         .on('click.es', '.es_item_final', async function() { 
-            const newId = $(this).data('id');
-            if (sel && sel._fsId === newId) return;
-            await _guardar(); // Guardar antes de cambiar
-            sel = docs.find(d => d._fsId === newId); 
-            _render(); _checkTools(); 
+            const newId = $(this).data('id'); if (sel?._fsId === newId) return;
+            await _guardar(); sel = docs.find(d => d._fsId === newId); _render(); _checkTools();
+            $('.es_container').removeClass('menu-open');
         })
         .on('input.es', '.es_search_final', function() { bus = $(this).val(); _renderList(); })
         .on('keyup.es mouseup.es click.es', '.es_editor', _checkTools)

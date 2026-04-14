@@ -1,6 +1,6 @@
 import './acerca.css';
 import $ from 'jquery';
-import { app, version, autor, link } from '../wii.js';
+import { app, version, by, linkme } from '../wii.js';
 import { wiVista, year, wiTip, wicopy } from '../widev.js';
 
 // ============================================================
@@ -283,7 +283,7 @@ export const render = () => `
         </div>
         <p class="ac_footer_txt">
           ${app} ${version} · Hecho con <i class="fas fa-heart"></i> por
-          <a href="${link}" target="_blank" rel="noopener">${autor}</a> · ${year()}
+          <a href="${linkme}" target="_blank" rel="noopener">${by}</a> · ${year()}
         </p>
       </div>
     </div>

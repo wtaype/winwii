@@ -1,6 +1,6 @@
 import './inicio.css';
 import $ from 'jquery';
-import { app, version, autor, link } from '../wii.js';
+import { app, version, by, linkme } from '../wii.js';
 import { wiVista, year, wiTip, Saludar } from '../widev.js';
 
 // ── DATA ──────────────────────────────────────────────────────
@@ -177,7 +177,7 @@ export const render = () => `
       <div class="ini_cta_chips">
         ${features.map(f=>`<a href="/${f.id}" class="ini_chip" style="--cc:${f.color}" ${wiTip(f.desc)}><i class="fas ${f.icon}"></i> ${f.nombre}</a>`).join('')}
       </div>
-      <p class="ini_cta_autor">Creado con ❤️ por <a href="${link}" target="_blank" rel="noopener">${autor}</a> · ${version} © ${year()}</p>
+      <p class="ini_cta_autor">Creado con ❤️ por <a href="${linkme}" target="_blank" rel="noopener">${by}</a> · ${version} © ${year()}</p>
     </div>
   </section>
 
