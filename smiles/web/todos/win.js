@@ -11,12 +11,13 @@ import { rutas } from '../../rutas/ruta.js';
    📝 Colección: wiWin · 100% Pro Industrial Responsive
    ══════════════════════════════════════════════════════════════ */
 
-let docs = [], sel = null, bus = '', saveTimer = null, _onVis = null, loading = true, isPub = false;
+let docs = [], sel = null, bus = '', _onVis = null, loading = true, isPub = false;
 const COL = 'wiWin', CACHE = 'wi_win_cache', wi = () => getls('wiSmile') || {};
 
 const _save = d => localStorage.setItem(CACHE, JSON.stringify(d));
 const _get = () => JSON.parse(localStorage.getItem(CACHE) || '[]');
 const _sort = () => docs.sort((a, b) => (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || (b.fechaActualizado?.seconds || 0) - (a.fechaActualizado?.seconds || 0));
+const _nowTs = () => ({ seconds: Math.floor(Date.now() / 1000) });
 
 const _cargar = async (u, silent = false) => {
     isPub = !u?.email;
@@ -36,20 +37,40 @@ const _auto = () => { if (!sel) sel = docs.find(d => d.pin) || docs[0] || null; 
 const _guardar = async (manual = false) => {
     if (!sel) return;
     const u = wi(), $btn = $('#btnS2'), tit = $('.es_in_title_h').val().trim() || 'Untitled', cnt = $('.es_editor').html();
-    if (!manual && sel.titulo === tit && sel.contenido === cnt) return;
+    sel.titulo = tit;
+    sel.contenido = cnt;
+    if (sel._dirty) sel.fechaActualizado = _nowTs();
+    const pendientes = docs.filter(d => d._dirty);
+    if (!pendientes.length) {
+        if (manual) Notificacion('Sin cambios por guardar', 'info', 800);
+        return;
+    }
     
-    sel.titulo = tit; sel.contenido = cnt; _save(docs);
+    _save(docs);
     if (manual) wiSpin($btn, true, 'Guardando');
-    if (isPub) { if (manual) setTimeout(() => { wiSpin($btn, false, 'Guardado'); setTimeout(() => $btn.html('<i class="fas fa-save"></i> <span>Guardar</span>'), 1500); }, 600); return; }
+    if (isPub) {
+        pendientes.forEach(d => d._dirty = false);
+        _save(docs);
+        if (manual) setTimeout(() => { wiSpin($btn, false, 'Guardado'); setTimeout(() => $btn.html('<i class="fas fa-save"></i> <span>Guardar</span>'), 1500); }, 600);
+        return;
+    }
 
     try {
-        const docId = sel._fsId;
-        const dataToSave = { 
-            id: sel.id, titulo: sel.titulo, contenido: sel.contenido, email: u.email,
-            usuario: u.usuario || 'Public', fecha: sel.fecha || serverTimestamp(),
-            fechaActualizado: serverTimestamp(), pin: sel.pin || false
-        };
-        await setDoc(doc(db, COL, docId), dataToSave);
+        for (const d of pendientes) {
+            const dataToSave = {
+                id: d.id,
+                titulo: d.titulo || 'Untitled',
+                contenido: d.contenido || '',
+                email: u.email,
+                usuario: u.usuario || 'Public',
+                fecha: d.fecha || serverTimestamp(),
+                fechaActualizado: serverTimestamp(),
+                pin: !!d.pin
+            };
+            await setDoc(doc(db, COL, d._fsId), dataToSave);
+            d._dirty = false;
+        }
+        _save(docs);
         if (manual) { Notificacion('Sincronización Exitosa ✨', 'success', 800); wiSpin($btn, false, 'Guardado'); }
     } catch (e) { 
         if (manual) { console.error("Save Error:", e); Notificacion('Error al guardar', 'error'); wiSpin($btn, false, 'Reintentar'); }
@@ -60,9 +81,9 @@ const _guardar = async (manual = false) => {
 
 const _nuevo = async () => {
     const u = wi(), ts = Date.now(), id = `win${ts}`;
-    const nuevo = { _fsId: id, id: id, titulo: '', contenido: '', pin: false, email: u.email || 'guest', usuario: u.usuario || 'Public', fecha: serverTimestamp(), fechaActualizado: serverTimestamp() };
+    const localTs = _nowTs();
+    const nuevo = { _fsId: id, id: id, titulo: '', contenido: '', pin: false, email: u.email || 'guest', usuario: u.usuario || 'Public', fecha: localTs, fechaActualizado: localTs, _dirty: true };
     docs.unshift(nuevo); sel = nuevo; _save(docs); _render(); $('.es_in_title_h').focus();
-    if (!isPub) { try { const dataToSave = { ...nuevo }; delete dataToSave._fsId; await setDoc(doc(db, COL, id), dataToSave); } catch (e) {} }
     $('.es_container').removeClass('menu-open');
 };
 
@@ -84,8 +105,7 @@ const _borrar = async (id, btn = null) => {
 const _togglePin = async (id) => {
     const d = docs.find(x => x._fsId === id);
     if (d) { 
-        d.pin = !d.pin; _sort(); _save(docs); _render(); 
-        if (!isPub) try { await setDoc(doc(db, COL, id), { ...d, _fsId: undefined, fechaActualizado: serverTimestamp() }); } catch (e) {}
+        d.pin = !d.pin; d._dirty = true; d.fechaActualizado = _nowTs(); _sort(); _save(docs); _render();
     }
 };
 
@@ -163,12 +183,19 @@ export const render = () => {
 
 export const init = async () => {
     cleanup(); const u = wi(); isPub = !u.email;
-    docs = _get(); if (docs.length) { loading = false; _auto(); } else { _render(); }
-    _cargar(u, true); $(document)
+    docs = _get();
+    if (docs.length) { loading = false; _auto(); } else { _render(); _cargar(u, true); }
+    $(document)
         .on('click.es', '.es_tool_btn[data-cmd]', function() { document.execCommand($(this).data('cmd')); $('.es_editor').focus(); _checkTools(); })
         .on('input.es', '.es_editor, .es_in_title_h', function() { 
-            if (sel) { sel.titulo = $('.es_in_title_h').val().trim(); sel.contenido = $('.es_editor').html(); _save(docs); if ($('.es_in_title_h').is(':focus')) _renderList(); }
-            clearTimeout(saveTimer); saveTimer = setTimeout(_guardar, 30000);
+            if (sel) {
+                sel.titulo = $('.es_in_title_h').val().trim();
+                sel.contenido = $('.es_editor').html();
+                sel._dirty = true;
+                sel.fechaActualizado = _nowTs();
+                _save(docs);
+                if ($('.es_in_title_h').is(':focus')) _renderList();
+            }
         })
         .on('click.es', '#btnS2', () => _guardar(true))
         .on('click.es', '#btnSync', () => _cargar(wi()))
@@ -178,15 +205,12 @@ export const init = async () => {
         .on('click.es', '#toggleMenu, .es_overlay', () => $('.es_container').toggleClass('menu-open'))
         .on('click.es', '.es_item_final', async function() { 
             const newId = $(this).data('id'); if (sel?._fsId === newId) return;
-            await _guardar(); sel = docs.find(d => d._fsId === newId); _render(); _checkTools();
+            sel = docs.find(d => d._fsId === newId); _render(); _checkTools();
             $('.es_container').removeClass('menu-open');
         })
         .on('input.es', '.es_search_final', function() { bus = $(this).val(); _renderList(); })
         .on('keyup.es mouseup.es click.es', '.es_editor', _checkTools)
         .on('keydown.es', '.es_in_title_h', function(e) { if (e.key === 'Tab') { e.preventDefault(); $('.es_editor').focus(); } });
-    
-    _onVis = () => !document.hidden && _cargar(u, true);
-    document.addEventListener('visibilitychange', _onVis);
 };
 
-export const cleanup = () => { $(document).off('.es'); if (_onVis) document.removeEventListener('visibilitychange', _onVis); docs = []; sel = null; clearTimeout(saveTimer); };
+export const cleanup = () => { $(document).off('.es'); if (_onVis) document.removeEventListener('visibilitychange', _onVis); docs = []; sel = null; };
