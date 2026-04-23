@@ -1,7 +1,7 @@
 import './tools.css';
 import $ from 'jquery';
 import { app, ipdev } from '../../wii.js';
-import { Notificacion } from '../../widev.js';
+import { Notificacion } from '../widev.js';
 
 const API = (() => {
   if (typeof window === 'undefined') return '';

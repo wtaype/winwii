@@ -4,7 +4,7 @@
 // ════════════════════════════════════════════════════════════════════
 import './usuarios.css';
 import $ from 'jquery';
-import { getls, Notificacion, avatar, formatearFechaHora } from '../../widev.js';
+import { getls, Notificacion, avatar, formatearFechaHora } from '../widev.js';
 import { db } from '../firebase.js';
 import { collection, query, orderBy, limit, getDocs, doc, deleteDoc } from 'firebase/firestore';
 

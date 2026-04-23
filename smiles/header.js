@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import { rutas, NAV } from './rutas/ruta.js';
-import { Mensaje, wiAuth } from './widev.js';
+import { rutas, NAV } from './web/rutas.js';
+import { Mensaje, wiAuth } from './web/widev.js';
 
 // ── MOTOR DE RENDERIZADO ──────────────────────────────────────────────────────
 const buildNav = (items, wi) => items.map(i => {

@@ -3,7 +3,7 @@ import $ from 'jquery';
 import Sortable from 'sortablejs';
 import { db } from '../firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, getls, savels, wiTip, wiSpin, wiAuth, Saludar } from '../../widev.js';
+import { Notificacion, getls, savels, wiTip, wiSpin, wiAuth, Saludar } from '../widev.js';
 import { app } from '../../wii.js';
 
 /* ══════════════════════════════════════════════════════════════

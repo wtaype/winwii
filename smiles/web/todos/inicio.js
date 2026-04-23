@@ -1,7 +1,7 @@
 import './inicio.css';
 import $ from 'jquery';
 import { app, version, by, linkme } from '../../wii.js';
-import { wiVista, year, wiTip, Saludar } from '../../widev.js';
+import { wiVista, year, wiTip, Saludar } from '../widev.js';
 
 // ── DATA ──────────────────────────────────────────────────────
 const roles = ['Organiza tu semana 📅','Tareas del día ✅','Notas profesionales 📝','Logros semanales 🏆'];

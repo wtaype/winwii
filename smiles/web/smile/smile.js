@@ -2,7 +2,7 @@ import './smile.css';
 import $ from 'jquery';
 import { auth } from '../firebase.js';
 import { onAuthStateChanged } from 'firebase/auth';
-import { getls } from '../../widev.js';
+import { getls, getNombre, fechaHoy, calcMeses, formatearFechaHora } from '../widev.js';
 import { app } from '../../wii.js';
 
 const waitAuth = () => new Promise(r => {
@@ -24,57 +24,38 @@ const getSaludo = () => {
   return           { txt: 'Buenas noches', ico: 'fa-moon'      };
 };
 
+const FRASES = [
+  { ico: 'fa-rocket',        txt: 'Cada día que avanzas te acerca más a donde quieres llegar. ¡No pares!' },
+  { ico: 'fa-star',          txt: 'Los sueños grandes requieren pasos constantes. Tú ya diste el primero.' },
+  { ico: 'fa-fire-flame-curved', txt: 'Tu esfuerzo de hoy es el logro que celebrarás mañana.' },
+  { ico: 'fa-heart',         txt: 'Creer en ti mismo es el superpoder más poderoso que tienes.' },
+  { ico: 'fa-bolt',          txt: 'No importa el ritmo, lo importante es no detenerse.' },
+  { ico: 'fa-seedling',      txt: 'Cada pequeño avance cuenta. Estás construyendo algo increíble.' },
+  { ico: 'fa-trophy',        txt: 'El éxito no es un destino, es el camino que recorres cada día.' },
+];
+
 export const render = () => `
   <div class="smw_page">
 
     <!-- HERO -->
     <div class="smw_hero">
-      <div class="smw_avatar" id="smwAvatar"></div>
-      <div class="smw_hero_info">
-        <p class="smw_saludo" id="smwSaludo"></p>
-        <h1 class="smw_nombre" id="smwNombre"></h1>
-        <div class="smw_badges" id="smwBadges"></div>
+      <div class="smw_hero_inner">
+        <div class="smw_avatar" id="smwAvatar"></div>
+        <div class="smw_hero_info">
+          <p class="smw_saludo"   id="smwSaludo"></p>
+          <h1 class="smw_nombre" id="smwNombre"></h1>
+          <p class="smw_hoy"     id="smwHoy"></p>
+          <div class="smw_badges" id="smwBadges"></div>
+        </div>
       </div>
     </div>
 
-    <!-- CARDS INFO -->
-    <div class="smw_cards" id="smwCards"></div>
+    <!-- STATS -->
+    <div class="smw_wrap">
+      <div class="smw_cards" id="smwCards"></div>
 
-    <!-- ACCESO RÁPIDO -->
-    <div class="smw_acciones">
-      <h2 class="smw_sec_title"><i class="fa-solid fa-bolt"></i> Acceso rápido</h2>
-      <div class="smw_grid">
-        <a href="/win" class="nv_item smw_acc" data-page="win">
-          <span class="smw_acc_ico"><i class="fa-solid fa-pen-to-square"></i></span>
-          <span class="smw_acc_txt">Win</span>
-          <small>Crea mensajes</small>
-        </a>
-        <a href="/notas" class="nv_item smw_acc" data-page="notas">
-          <span class="smw_acc_ico"><i class="fa-solid fa-note-sticky"></i></span>
-          <span class="smw_acc_txt">Notas</span>
-          <small>Tus apuntes</small>
-        </a>
-        <a href="/milab" class="nv_item smw_acc" data-page="milab">
-          <span class="smw_acc_ico"><i class="fa-solid fa-flask"></i></span>
-          <span class="smw_acc_txt">Mi Lab</span>
-          <small>Experimenta</small>
-        </a>
-        <a href="/agregar" class="nv_item smw_acc" data-page="agregar">
-          <span class="smw_acc_ico"><i class="fa-solid fa-circle-plus"></i></span>
-          <span class="smw_acc_txt">Agregar</span>
-          <small>Nuevo contenido</small>
-        </a>
-        <a href="/mensajes" class="nv_item smw_acc" data-page="mensajes">
-          <span class="smw_acc_ico"><i class="fa-solid fa-comments"></i></span>
-          <span class="smw_acc_txt">Mensajes</span>
-          <small>Tu bandeja</small>
-        </a>
-        <a href="/perfil" class="nv_item smw_acc" data-page="perfil">
-          <span class="smw_acc_ico"><i class="fa-solid fa-circle-user"></i></span>
-          <span class="smw_acc_txt">Perfil</span>
-          <small>Tu cuenta</small>
-        </a>
-      </div>
+      <!-- FRASE MOTIVACIONAL -->
+      <div class="smw_motiv" id="smwMotiv"></div>
     </div>
 
   </div>
@@ -89,43 +70,68 @@ export const init = async () => {
   const wi = getls('wiSmile');
   if (!wi) return;
 
-  const nombre    = wi.nombre    || wi.usuario || user.email;
-  const apellidos = wi.apellidos || '';
-  const email     = wi.email     || user.email;
-  const rol       = wi.rol       || 'smile';
-  const usuario   = wi.usuario   || nombre.toLowerCase();
+  const nombre    = getNombre(wi.nombre || wi.usuario || '');
+  const fullName  = `${wi.nombre || ''} ${wi.apellidos || ''}`.trim();
+  const email     = wi.email || user.email;
+  const rol       = wi.rol   || 'smile';
+  const meses     = calcMeses(wi.creado?.seconds ? new Date(wi.creado.seconds * 1000) : wi.creado);
   const iniciales = `${(wi.nombre || '?')[0]}${(wi.apellidos || '')[0] || ''}`.toUpperCase();
   const saludo    = getSaludo();
+  const frase     = FRASES[Math.floor(Math.random() * FRASES.length)];
 
+  // Hero
   $('#smwAvatar').text(iniciales);
-  $('#smwSaludo').html(`<i class="fas ${saludo.ico}"></i> ${saludo.txt}`);
-  $('#smwNombre').text(`${nombre} ${apellidos}`.trim());
-
+  $('#smwSaludo').html(`<i class="fas ${saludo.ico}"></i> ${saludo.txt}, <strong>${nombre}</strong>`);
+  $('#smwNombre').text(fullName);
+  $('#smwHoy').text(fechaHoy());
   $('#smwBadges').html(`
     <span class="smw_badge smw_rol"><i class="fas fa-shield-halved"></i> ${rol}</span>
     <span class="smw_badge smw_email"><i class="fas fa-envelope"></i> ${email}</span>
   `);
 
+  // Stats cards
+  const tiempoTxt = meses <= 0   ? 'Recién llegado 🎉'
+                  : meses === 1  ? '1 mes con nosotros'
+                  : `${meses} meses con nosotros`;
+
   $('#smwCards').html(`
-    <div class="smw_card" style="--d:.0s">
-      <span class="smw_card_ico"><i class="fas fa-calendar-plus"></i></span>
+    <div class="smw_card" style="--d:0s">
+      <span class="smw_card_ico"><i class="fas fa-calendar-heart"></i></span>
       <div class="smw_card_data">
         <small>Miembro desde</small>
         <strong>${fmtFecha(wi.creado)}</strong>
       </div>
     </div>
-    <div class="smw_card" style="--d:.08s">
-      <span class="smw_card_ico"><i class="fas fa-clock"></i></span>
+    <div class="smw_card" style="--d:.07s">
+      <span class="smw_card_ico"><i class="fas fa-hourglass-half"></i></span>
       <div class="smw_card_data">
-        <small>Última actividad</small>
-        <strong>${fmtFecha(wi.ultimaActividad)}</strong>
+        <small>Tiempo en ${app}</small>
+        <strong>${tiempoTxt}</strong>
       </div>
     </div>
-    <div class="smw_card" style="--d:.16s">
+    <div class="smw_card" style="--d:.14s">
+      <span class="smw_card_ico"><i class="fas fa-clock-rotate-left"></i></span>
+      <div class="smw_card_data">
+        <small>Última actividad</small>
+        <strong>${formatearFechaHora(wi.ultimaActividad)}</strong>
+      </div>
+    </div>
+    <div class="smw_card" style="--d:.21s">
       <span class="smw_card_ico"><i class="fas fa-at"></i></span>
       <div class="smw_card_data">
         <small>Usuario</small>
-        <strong>@${usuario}</strong>
+        <strong>@${wi.usuario || nombre.toLowerCase()}</strong>
+      </div>
+    </div>
+  `);
+
+  // Frase motivacional
+  $('#smwMotiv').html(`
+    <div class="smw_motiv_inner">
+      <span class="smw_motiv_ico"><i class="fas ${frase.ico}"></i></span>
+      <div class="smw_motiv_txt">
+        <small>Para ti, ${nombre} 💛</small>
+        <p>${frase.txt}</p>
       </div>
     </div>
   `);

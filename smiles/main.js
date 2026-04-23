@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import { getls, wiSmart} from './widev.js';
-import { rutas } from './rutas/ruta.js';
+import { getls, wiSmart } from './web/widev.js';
+import { rutas } from './web/rutas.js';
 
 // ── RUTAS PROFESIONAL DE ACUERDO A ROLES  ─────────────────────────────
 rutas.registerAll(() => getls('wiSmile')?.rol);

@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import { app } from '../wii.js';
-import { wiPath, wiFade } from './rutadev.js';
-import { Notificacion } from '../widev.js';
+import { Notificacion, wiPath, wiFade } from './widev.js';
 
 // ── NAV — Config visual por rol ────────────────────────────────────────────────
 export const NAV = {
@@ -121,8 +120,9 @@ export const RUTAS = [
 ];
 
 // ── GLOB — Vite mapea todos los módulos en build time ─────────────────────────
-const MODS = import.meta.glob('../web/**/*.js');
-const mod$ = (area, page) => MODS[`../web/${area}${page}.js`];
+// rutas.js está en smiles/web/ → las áreas (todos/, smile/, etc.) son relativas a aquí
+const MODS = import.meta.glob('./**/*.js');
+const mod$ = (area, page) => MODS[`./${area}${page}.js`];
 
 // ── MOTOR ──────────────────────────────────────────────────────────────────────
 class WiRutas {

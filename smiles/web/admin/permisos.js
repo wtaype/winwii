@@ -4,7 +4,7 @@
 // ════════════════════════════════════════════════════════════════════
 import './permisos.css';
 import $ from 'jquery';
-import { getls, Notificacion, avatar } from '../../widev.js';
+import { getls, Notificacion, avatar } from '../widev.js';
 import { db } from '../firebase.js';
 import { collection, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 

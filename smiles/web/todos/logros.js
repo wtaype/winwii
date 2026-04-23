@@ -2,7 +2,7 @@ import './logros.css';
 import $ from 'jquery';
 import { db } from '../firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth } from '../../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth } from '../widev.js';
 
 const CACHE = 'wii_logros_v1', COL = 'logros';
 

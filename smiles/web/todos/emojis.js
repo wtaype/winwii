@@ -1,6 +1,6 @@
 import './emojis.css';
 import $ from 'jquery';
-import { Notificacion, getls, savels, wiTip, Saludar } from '../../widev.js';
+import { Notificacion, getls, savels, wiTip, Saludar } from '../widev.js';
 import { app } from '../../wii.js';
 
 /* ══════════════════════════════════════════════════════════════

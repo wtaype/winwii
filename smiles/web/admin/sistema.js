@@ -4,7 +4,7 @@
 // ════════════════════════════════════════════════════════════════════
 import './sistema.css';
 import $ from 'jquery';
-import { getls, Notificacion, fechaHoy } from '../../widev.js';
+import { getls, Notificacion, fechaHoy } from '../widev.js';
 import { db } from '../firebase.js';
 import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 

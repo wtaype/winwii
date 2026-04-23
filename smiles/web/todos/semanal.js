@@ -2,7 +2,7 @@ import './semanal.css';
 import $ from 'jquery';
 import { db } from '../firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth } from '../../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth } from '../widev.js';
 
 /* ══════════════════════════════════════════════════════════════
    SEMANAL v2.0 PRO — Vista de Semana Integrada

@@ -233,6 +233,39 @@ export const mis10 = (txt) => txt.length <= 10 ? txt : txt.substring(0, 10) + '.
 export const adtm = (se, cl, ti, tf) => $(se).text(ti).addClass(cl).delay(1800).queue(q => $(se).text(tf).removeClass(cl).dequeue());
 export const adup = (x, y) => ($(x).addClass('updating').text(y), setTimeout(() => $(x).removeClass('updating'), 500));
 
+// PARA RUTAS PRO V10.1 _________________________________
+// === RUTA LIMPIA V11 ===
+export const wiPath = {
+  limpiar(ruta) {
+    const base = import.meta?.env?.BASE_URL || '/';
+    const guar = sessionStorage.ghPath;
+    if (guar) { sessionStorage.removeItem('ghPath'); return guar.replace(/^\/wiiprime(\/v\d+)?/, '') || '/'; }
+    let r = base !== '/' && ruta?.startsWith(base) ? ruta.slice(base.length - 1) || '/' : ruta || '/';
+    if (r !== '/' && !r.startsWith('/')) r = '/' + r;
+    return r;
+  },
+  poner(ruta, titulo = '') {
+    history.pushState({ ruta }, titulo, ruta);
+    titulo && (document.title = titulo);
+  },
+  params: () => Object.fromEntries(new URLSearchParams(location.search)),
+  get actual() { return this.limpiar(location.pathname); }
+};
+
+// === FADE SUAVE V12 ===
+export const wiFade = async (sel, html, dur = 80) => {
+  const el = $(sel)[0]; if (!el) return;
+  el.style.willChange = 'opacity';
+  el.style.transition = `opacity ${dur}ms ease`;
+  el.style.opacity = 0;
+  await new Promise(r => setTimeout(r, dur));
+  el.innerHTML = html;
+  el.style.opacity = 1;
+  await new Promise(r => setTimeout(r, dur));
+  el.style.transition = ''; el.style.willChange = '';
+};
+// PARA SMILES PRO[END]________________________________
+
 // Capitaliza cada palabra
 export const Capit = (txt = '') => txt.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
 

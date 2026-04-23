@@ -3,7 +3,7 @@ import $ from 'jquery';
 import Sortable from 'sortablejs';
 import { db } from '../firebase.js';
 import { collection, doc, setDoc, getDocs, deleteDoc, query, where, serverTimestamp } from 'firebase/firestore';
-import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth } from '../../widev.js';
+import { Notificacion, abrirModal, cerrarModal, getls, savels, wiTip, wiSpin, wiAuth } from '../widev.js';
 
 const CACHE = 'wii_tareas_v1', COL = 'tareas';
 const ESTADOS  = { pendiente:'Pendiente', progreso:'En progreso', revision:'Revisión', hecho:'Hecho' };

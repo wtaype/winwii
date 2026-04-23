@@ -1,7 +1,7 @@
 import './preview.css';
 import $ from 'jquery';
 import { app } from '../../wii.js';
-import { wiVista, Notificacion } from '../../widev.js';
+import { wiVista, Notificacion } from '../widev.js';
 
 const platformSpecs = {
   tiktok: { name: 'TikTok', maxDuration: 180, aspectRatio: '9:16', recommended: '1080x1920', formats: ['MP4', 'MOV'], maxSize: 287 },

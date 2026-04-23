@@ -8,7 +8,7 @@ import { db } from '../firebase.js';
 import { collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import {
   getls, savels, Saludar, fechaHoy, NombreApellido, avatar, Capit, formatearFechaHora
-} from '../../widev.js';
+} from '../widev.js';
 import { app } from '../../wii.js';
 
 const wi = () => getls('wiSmile');
@@ -134,7 +134,7 @@ export const init = async () => {
     e.preventDefault();
     const page = $(this).data('page');
     if (!page) return;
-    import('../../rutas/ruta.js').then(({ rutas }) => rutas.navigate(`/${page}`));
+    import('../rutas.js').then(({ rutas }) => rutas.navigate(`/${page}`));
   });
 
   // Botón actualizar feed manual
