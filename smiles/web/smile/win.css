@@ -12,11 +12,13 @@
     background: var(--bg);
     overflow: hidden;
     position: relative;
+    box-shadow: 0 0.781vw 1.823vw -0.26vw var(--bg5);
+    border-radius: 1vh;
 }
 
 /* --- COLUMNA LEFT (69%) --- EL EDITOR DEFINITIVO --- */
 .es_left {
-    flex: 0 0 69%;
+    flex: 0 0 74%;
     background: #fff;
     border-right: 1px solid var(--brd);
     display: flex;
@@ -189,7 +191,7 @@
 .es_font_sel:focus, .es_font_sel:hover { background: rgba(var(--tx-rgb, 0,0,0), 0.05); }
 
 /* --- COLUMNA RIGHT (30.5%) --- */
-.es_right { flex: 0 0 30.5%; }
+.es_right { flex: 0 0 26%; }
 
 .es_sidebar_final {
     background: var(--wb);

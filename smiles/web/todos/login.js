@@ -14,7 +14,7 @@ const cfg = { db: 'smiles', pagina: 'rol' };
 let modal = 'si', link = 'si', restablecer = 'si', login = 'si', registrar = 'si';
 
 // Ruta por rol
-const ROL_PATH = { smile: '/smile', gestor: '/gestor', empresa: '/empresa', admin: '/admin' };
+const ROL_PATH = { smile: '/win', gestor: '/gestor', empresa: '/empresa', admin: '/admin' };
 
 const err = {
   'auth/email-already-in-use':'Email ya registrado', 'auth/weak-password':'Contraseña débil (mín. 6)',
