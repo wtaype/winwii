@@ -232,3 +232,45 @@ export const adrm = (a, b) => $(a).addClass(b).siblings().removeClass(b);
 export const mis10 = (txt) => txt.length <= 10 ? txt : txt.substring(0, 10) + '...';
 export const adtm = (se, cl, ti, tf) => $(se).text(ti).addClass(cl).delay(1800).queue(q => $(se).text(tf).removeClass(cl).dequeue());
 export const adup = (x, y) => ($(x).addClass('updating').text(y), setTimeout(() => $(x).removeClass('updating'), 500));
+
+// Capitaliza cada palabra
+export const Capit = (txt = '') => txt.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+
+// "Primer Nombre + Último Apellido" desde nombres completos
+export const NombreApellido = (nombres = '') => {
+  const p = nombres.trim().split(/\s+/).filter(Boolean);
+  return p.length <= 1 ? Capit(nombres) : `${Capit(p[0])} ${Capit(p[p.length - 1])}`;
+};
+
+// Primer nombre capitalizado
+export const getNombre = (nombres = '') => Capit(nombres.trim().split(/\s+/)[0] || nombres);
+
+// Inicial del apellido (último token) para avatar
+export const avatar = (nombres = '') => {
+  const p = nombres.trim().split(/\s+/).filter(Boolean);
+  return (p[p.length - 1]?.[0] ?? p[0]?.[0] ?? 'U').toUpperCase();
+};
+
+// Fecha de hoy en español (ej: "domingo, 13 de abril de 2026")
+export const fechaHoy = () => new Date().toLocaleDateString('es-PE', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+// Timestamp → "YYYY-MM-DD" para input[type=date]
+export const formatearFechaParaInput = (ts) => {
+  if (!ts) return '';
+  const d = ts?.seconds ? new Date(ts.seconds * 1000) : new Date(ts);
+  return d.toISOString().split('T')[0];
+};
+
+// Timestamp → "13 abr 2026 09:30" legible
+export const formatearFechaHora = (ts) => {
+  if (!ts) return '—';
+  const d = ts?.seconds ? new Date(ts.seconds * 1000) : new Date(ts);
+  return d.toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' })
+       + ' ' + d.toLocaleTimeString('es-PE', { hour:'2-digit', minute:'2-digit' });
+};
+
+// Meses entre una fecha y hoy
+export const calcMeses = (desde) => {
+  const h = new Date(), f = new Date(desde);
+  return (h.getFullYear() - f.getFullYear()) * 12 + (h.getMonth() - f.getMonth());
+};
