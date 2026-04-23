@@ -181,7 +181,7 @@ export const init = async () => {
   $(document).on('click.gs', '.gs_fi_btn', function () {
     const usuario = $(this).data('usuario');
     savels('gsBuscarTerm', usuario, 1/60);
-    import('../../rutas/ruta.js').then(({ rutas }) => rutas.navigate('/buscar'));
+    import('../rutas.js').then(({ rutas }) => rutas.navigate('/buscar'));
   });
 };
 
