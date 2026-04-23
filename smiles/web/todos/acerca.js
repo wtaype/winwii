@@ -1,7 +1,7 @@
 import './acerca.css';
 import $ from 'jquery';
-import { app, version, by, linkme } from '../wii.js';
-import { wiVista, year, wiTip, wicopy } from '../widev.js';
+import { app, version, by, linkme } from '../../wii.js';
+import { wiVista, year, wiTip, wicopy } from '../../widev.js';
 
 // ============================================================
 // 📦 DATA

@@ -1,0 +1,181 @@
+/* ═══════════════════════════════════════════════════════════
+   PERMISOS.CSS — TypingWii · Admin · Gestión de Roles
+═══════════════════════════════════════════════════════════ */
+.adp_page {
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  animation: adpFade .4s cubic-bezier(.2, .8, .2, 1);
+  position: relative;
+  max-width: 100%;
+}
+@keyframes adpFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── HERO ────────────────────────────────────────────────── */
+.adp_hero {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+  border-radius: 2vh;
+  padding: 4vh 4vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3vh;
+  box-shadow: 0 1.5vh 4vh rgba(30,27,75,0.3);
+  position: relative;
+  overflow: hidden;
+  color: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.adp_hero::before {
+  content: ''; position: absolute; left: 0; bottom: -50%;
+  width: 50%; height: 100%; background: radial-gradient(circle at center, rgba(139,92,246,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.adp_hero_left {
+  display: flex; align-items: center; gap: 2.5vh; position: relative; z-index: 1; flex: 1;
+}
+.adp_hero_icon {
+  width: 8vh; height: 8vh; border-radius: 2vh;
+  background: rgba(255,255,255,0.1); display: flex; align-items: center;
+  justify-content: center; font-size: 3.5vh; color: #a78bfa; flex-shrink: 0;
+  border: 1px solid rgba(167,139,250,0.3); box-shadow: 0 0 3vh rgba(167,139,250,0.15);
+}
+.adp_hero_txt { flex: 1; display: flex; flex-direction: column; gap: 0.5vh; }
+.adp_badge {
+  display: inline-flex; align-items: center; gap: 0.6vh;
+  padding: 0.4vh 1.2vh; border-radius: 1vh; align-self: flex-start;
+  background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.25);
+  font-size: var(--fz_s4); font-weight: 800; color: #c4b5fd; text-transform: uppercase;
+  letter-spacing: 0.05em; margin-bottom: 0.5vh;
+}
+.adp_hero_title { font-family: var(--ff_G); font-size: var(--fz_l2); font-weight: 800; margin: 0; line-height: 1.1; }
+.adp_hero_sub { font-size: var(--fz_m1); color: #c7d2fe; margin: 0; font-weight: 500; }
+
+/* ── PANEL DE BÚSQUEDA RÁPIDA ────────────────────────────── */
+.adp_finder {
+  background: var(--wb); border: 1px solid var(--brd); border-radius: 2vh;
+  padding: 3vh 4vw; display: flex; align-items: center; justify-content: space-between; gap: 3vh;
+  box-shadow: 0 1vh 3vh var(--bg5);
+}
+.adp_finder_txt { flex: 1; }
+.adp_finder_tit { font-size: var(--fz_m2); font-weight: 800; color: var(--tx); margin: 0 0 0.5vh; }
+.adp_finder_sub { font-size: var(--fz_m1); color: var(--tx3); margin: 0; }
+.adp_finder_inp_wrap {
+  display: flex; gap: 1vh; width: 100%; max-width: 400px;
+}
+.adp_finder_inp {
+  flex: 1; padding: 1.5vh 2vh; border: 1px solid var(--brd); border-radius: 1vh;
+  background: var(--bg); font-size: var(--fz_m1); color: var(--tx); outline: none; transition: all 0.2s;
+}
+.adp_finder_inp:focus { border-color: #8b5cf6; box-shadow: 0 0 0 4px rgba(139,92,246,0.15); }
+.adp_finder_btn {
+  background: #8b5cf6; color: #fff; border: none; padding: 0 2.5vh; border-radius: 1vh;
+  font-size: var(--fz_m1); font-weight: 800; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 1vh; box-shadow: 0 1vh 2vh rgba(139,92,246,0.25);
+}
+.adp_finder_btn:hover { background: #7c3aed; transform: translateY(-0.2vh); }
+
+/* ── GRID PRIVILEGIADOS ──────────────────────────────────── */
+.adp_sec_title { font-size: var(--fz_m3); font-weight: 800; color: var(--tx); display: flex; align-items: center; gap: 1vh; margin: 1vh 0 0; }
+.adp_sec_title i { color: #8b5cf6; }
+
+.adp_grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(32vh, 1fr)); gap: 2.5vh;
+}
+.adp_card {
+  background: var(--wb); border: 1px solid var(--brd); border-radius: 2vh;
+  padding: 3vh 2.5vh; display: flex; flex-direction: column; align-items: center; text-align: center;
+  box-shadow: 0 1vh 2vh var(--bg5); transition: all 0.3s; position: relative; overflow: hidden;
+}
+.adp_card:hover { transform: translateY(-0.5vh); box-shadow: 0 1.5vh 4vh var(--bg5); }
+
+.adp_card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 0.6vh;
+  background: var(--clr);
+}
+
+.adp_c_rol {
+  position: absolute; top: 1.5vh; right: 1.5vh; padding: 0.4vh 1vh; border-radius: 0.8vh;
+  font-size: var(--fz_s4); font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+  background: color-mix(in srgb, var(--clr) 15%, transparent); color: var(--clr);
+}
+
+.adp_av {
+  width: 7vh; height: 7vh; border-radius: 50%; background: var(--bg4); color: var(--tx3);
+  display: flex; align-items: center; justify-content: center; font-size: 2.5vh; font-weight: 800;
+  margin-bottom: 1.5vh; border: 2px solid var(--clr); margin-top: 1vh;
+}
+.adp_nom { font-size: var(--fz_m2); font-weight: 800; color: var(--tx); line-height: 1.2; margin-bottom: 0.3vh; }
+.adp_eml { font-size: var(--fz_s4); color: var(--tx3); margin-bottom: 2vh; }
+
+.adp_btn_edit {
+  width: 100%; padding: 1.2vh; border: 1px solid var(--brd); border-radius: 1vh;
+  background: var(--bg); color: var(--tx); font-size: var(--fz_m1); font-weight: 700;
+  cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 1vh;
+}
+.adp_btn_edit:hover { background: var(--tx); color: var(--bg); border-color: var(--tx); }
+
+/* ── MODAL ASIGNAR ROL ───────────────────────────────────── */
+.adp_modal_bg {
+  position: fixed; inset: 0; background: rgba(30,27,75,0.6); z-index: 9000;
+  display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+  padding: 2vh; animation: adpModFade .2s;
+}
+@keyframes adpModFade { from{opacity:0} to{opacity:1} }
+.adp_modal_card {
+  background: var(--wb); border: 1px solid var(--brd); border-radius: 2vh;
+  width: 100%; max-width: 480px; display: flex; flex-direction: column;
+  box-shadow: 0 2vh 6vh rgba(0,0,0,0.4); transform: scale(1); transition: 0.3s;
+}
+.adp_modal_hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2.5vh 3vh; border-bottom: 1px solid var(--brd);
+}
+.adp_modal_title { font-size: var(--fz_m4); font-weight: 800; color: var(--tx); display: flex; align-items: center; gap: 1vh; margin: 0; }
+.adp_modal_title i { color: #8b5cf6; }
+.adp_modal_close { background: none; border: none; font-size: 2.2vh; color: var(--tx3); cursor: pointer; transition: color 0.2s; }
+.adp_modal_close:hover { color: var(--tx); }
+
+.adp_modal_body { padding: 3vh; display: flex; flex-direction: column; gap: 2vh; }
+.adp_usr_preview {
+  display: flex; align-items: center; gap: 2vh; padding: 2vh; background: var(--bg);
+  border-radius: 1.5vh; border: 1px solid var(--brd);
+}
+
+.adp_roles_grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5vh; }
+.adp_role_opt {
+  border: 2px solid var(--brd); border-radius: 1.2vh; padding: 2vh; text-align: center;
+  cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 1vh;
+}
+.adp_role_opt:hover { border-color: var(--tx3); background: var(--bg4); }
+.adp_role_opt.selected { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 5%, transparent); }
+.adp_role_opt i { font-size: 3vh; color: var(--ac); }
+.adp_role_opt b { font-size: var(--fz_m1); color: var(--tx); display: block; text-transform: capitalize; }
+.adp_role_opt small { font-size: 1.1vh; color: var(--tx3); line-height: 1.2; display: block; }
+
+.adp_modal_foot {
+  padding: 2vh 3vh; border-top: 1px solid var(--brd); display: flex; justify-content: flex-end; gap: 1.5vh; background: var(--bg);
+}
+.adp_btn_cancel {
+  background: var(--wb); border: 1px solid var(--brd); border-radius: 1vh;
+  padding: 1.2vh 2vh; font-weight: 700; color: var(--tx3); cursor: pointer; transition: all 0.2s;
+}
+.adp_btn_save {
+  background: #8b5cf6; color: #fff; border: none; border-radius: 1vh;
+  padding: 1.2vh 2.5vh; font-weight: 800; cursor: pointer; transition: all 0.2s;
+}
+.adp_btn_save:hover { background: #7c3aed; transform: translateY(-0.2vh); }
+
+/* ── EMPTY / LOADING ─────────────────────────────────────── */
+.adp_empty { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6vh 2vh; color: var(--tx3); text-align: center; gap: 1.5vh; grid-column: 1 / -1; }
+.adp_empty i { font-size: 5vh; color: #8b5cf6; opacity: 0.2; }
+.adp_empty p { font-size: var(--fz_m1); font-weight: 600; margin: 0; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .adp_finder { flex-direction: column; align-items: stretch; text-align: center; }
+  .adp_finder_inp_wrap { max-width: 100%; }
+}

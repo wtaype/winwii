@@ -1,41 +1,33 @@
 import $ from 'jquery';
-import { rutas } from './rutas/ruta.js';
-import { Mensaje, wiSmart, wiAuth } from './widev.js';
+import { rutas, NAV } from './rutas/ruta.js';
+import { Mensaje, wiAuth } from './widev.js';
 
-// VISTA PERSONAL_________________________________
-export const personal = wi => {
-  Mensaje?.('Bienvenido '+wi.nombre);
-  $('.nv_right').html(`
-    
-    <a href="/notas" class="nv_item" data-page="notas"><i class="fa-solid fa-note-sticky"></i> <span>Mis Notas</span></a>
-    <a href="/mensajes" class="nv_item" data-page="mensajes"><i class="fa-solid fa-message"></i> <span>Mensajes</span></a>
-    <a href="/perfil" class="nv_item" data-page="perfil"><img src="${wi.imagen || './smile.avif'}" alt="${wi.nombre}"><span>${wi.nombre}</span></a>
-    <button class="nv_item bt_salir" data-page="inicio"><i class="fa-solid fa-sign-out-alt"></i> <span>salir</span></button>
-  `);
+// ── MOTOR DE RENDERIZADO ──────────────────────────────────────────────────────
+const buildNav = (items, wi) => items.map(i => {
+  if (i.isBtn)    return `<button class="${i.cls}"><i class="fas ${i.ico}"></i><span>${i.txt}</span></button>`;
+  if (i.isPerfil) return `<a href="/perfil" class="nv_item" data-page="perfil"><img src="${wi?.imagen || './smile.avif'}" alt="${wi?.nombre}"><span>${wi?.nombre}</span></a>`;
+  if (i.isSalir)  return `<button class="nv_item bt_salir" data-page="inicio"><i class="fa-solid fa-sign-out-alt"></i> <span>Salir</span></button>`;
+  return `<a href="${i.href}" class="nv_item" data-page="${i.page}"><i class="fas ${i.ico}"></i> <span>${i.txt}</span></a>`;
+}).join('');
+
+const renderHeader = (wi) => {
+  const cfg = NAV[wi?.rol] ?? NAV.todos;
+  if (wi) Mensaje?.('Bienvenido ' + wi.nombre);
+  $('.winav').html(buildNav(cfg.winav, wi));
+  $('.nv_right').html(buildNav(cfg.nvrig, wi));
 };
 
-// VISTA PUBLICA_________________________________
-const publico = () => {
-  $('.nv_right').html(`
-    <a href="/descubre" class="nv_item" data-page="descubre"><i class="fa-solid fa-gauge"></i> <span>Descubre </span></a>
-    <button class="bt_auth registrar"><i class="fas fa-user-plus"></i><span>Registrar</span></button>
-    <button class="bt_auth login"><i class="fas fa-sign-in-alt"></i><span>Login</span></button>  
-  `);
-};
+// ── AUTH LISTENER ─────────────────────────────────────────────────────────────
+wiAuth.on(wi => wi ? renderHeader(wi) : (renderHeader(), rutas.navigate('/')));
+const wi = wiAuth.user; wi ? renderHeader(wi) : renderHeader();
 
-// MI AUTH_________________________________
-wiAuth.on(wi => wi ? personal(wi) : (publico(), rutas.navigate('/')));
-const wi = wiAuth.user; wi ? personal(wi) : publico();
-
-// SALIR_________________________________
-const KEEP_KEYS = ['wiTema', 'wiSmart', 'wiFresh'];
+// ── EVENTOS GLOBALES ──────────────────────────────────────────────────────────
 $(document).on('click', '.bt_salir', async () => {
-  const { salir } = await import('./web/login.js');
-  salir(KEEP_KEYS);
+  const { salir } = await import('./web/todos/login.js');
+  salir(['wiTema', 'wiSmart', 'wiFresh']);
 });
 
-// LOGIN / REGISTRAR — Firebase se carga solo al hacer click
 $(document).on('click', '.bt_auth', async function () {
-  const { abrirLogin } = await import('./web/login.js');
+  const { abrirLogin } = await import('./web/todos/login.js');
   abrirLogin($(this).hasClass('registrar') ? 'registrar' : 'login');
 });

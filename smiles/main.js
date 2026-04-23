@@ -2,9 +2,23 @@ import $ from 'jquery';
 import { getls, wiSmart} from './widev.js';
 import { rutas } from './rutas/ruta.js';
 
-['inicio','acerca'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/${pg}.js`)));
-['win','extraer','planificar','emojis','diario','semanal','mensual','tools','online','preview',,'horario','tareas','planes','semanal','mes','logros'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/todos/${pg}.js`)));
-['descubre','login','smile','perfil', 'notas','mensajes'].forEach(pg => rutas.register(`/${pg}`, () => import(`./web/smile/${pg}.js`)));
+// ── RUTAS PROFESIONAL DE ACUERDO A ROLES  ─────────────────────────────
+rutas.registerAll(() => getls('wiSmile')?.rol);
+
+rutas.register('/', (isPre = false) => {
+  const u = getls('wiSmile');
+  if (!u) return import('./web/todos/inicio.js');
+  const map = {
+    smile:   { r: '/smile',   m: () => import('./web/smile/smile.js')     },
+    gestor:  { r: '/gestor',  m: () => import('./web/gestor/gestor.js')   },
+    empresa: { r: '/empresa', m: () => import('./web/empresa/empresa.js') },
+    admin:   { r: '/admin',   m: () => import('./web/admin/admin.js')     }
+  };
+  const t = map[u.rol] || map.smile;
+  if (!isPre && t.r !== '/') { rutas.navigate(t.r); return t.m(); }
+  return t.m();
+});
+
 import('./header.js');
 rutas.init();
 

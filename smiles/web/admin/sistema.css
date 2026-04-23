@@ -1,0 +1,125 @@
+/* ═══════════════════════════════════════════════════════════
+   SISTEMA.CSS — TypingWii · Admin · Sistema y Data
+═══════════════════════════════════════════════════════════ */
+.ads_page {
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+  animation: adsFade .4s cubic-bezier(.2, .8, .2, 1);
+  position: relative;
+  max-width: 100%;
+}
+@keyframes adsFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── HERO ────────────────────────────────────────────────── */
+.ads_hero {
+  background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+  border-radius: 2vh;
+  padding: 4vh 4vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3vh;
+  box-shadow: 0 1.5vh 4vh rgba(2,6,23,0.4);
+  position: relative;
+  overflow: hidden;
+  color: #f8fafc;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.ads_hero::before {
+  content: ''; position: absolute; left: -10vh; top: -10vh;
+  width: 35vh; height: 35vh; background: radial-gradient(circle at center, rgba(16,185,129,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ads_hero_left {
+  display: flex; align-items: center; gap: 2.5vh; position: relative; z-index: 1; flex: 1;
+}
+.ads_hero_icon {
+  width: 8vh; height: 8vh; border-radius: 2vh;
+  background: rgba(255,255,255,0.05); display: flex; align-items: center;
+  justify-content: center; font-size: 3.5vh; color: #10b981; flex-shrink: 0;
+  border: 1px solid rgba(16,185,129,0.3); box-shadow: 0 0 3vh rgba(16,185,129,0.15);
+}
+.ads_hero_txt { flex: 1; display: flex; flex-direction: column; gap: 0.5vh; }
+.ads_badge {
+  display: inline-flex; align-items: center; gap: 0.6vh;
+  padding: 0.4vh 1.2vh; border-radius: 1vh; align-self: flex-start;
+  background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.25);
+  font-size: var(--fz_s4); font-weight: 800; color: #34d399; text-transform: uppercase;
+  letter-spacing: 0.05em; margin-bottom: 0.5vh;
+}
+.ads_hero_title { font-family: var(--ff_G); font-size: var(--fz_l2); font-weight: 800; margin: 0; line-height: 1.1; }
+.ads_hero_sub { font-size: var(--fz_m1); color: #94a3b8; margin: 0; font-weight: 500; }
+
+/* ── GRID DE CONTROLES ───────────────────────────────────── */
+.ads_grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(40vh, 1fr)); gap: 2.5vh;
+}
+.ads_card {
+  background: var(--wb); border: 1px solid var(--brd); border-radius: 2vh;
+  padding: 3vh; display: flex; flex-direction: column; gap: 2vh;
+  box-shadow: 0 1vh 3vh var(--bg5); position: relative; overflow: hidden;
+}
+.ads_card_hdr { display: flex; align-items: center; gap: 1.5vh; }
+.ads_card_ico {
+  width: 6vh; height: 6vh; border-radius: 1.5vh; background: color-mix(in srgb, var(--ac) 15%, transparent);
+  color: var(--ac); display: flex; align-items: center; justify-content: center; font-size: 2.5vh;
+}
+.ads_card_tit { font-size: var(--fz_m2); font-weight: 800; color: var(--tx); margin: 0; }
+.ads_card_sub { font-size: var(--fz_s4); color: var(--tx3); font-weight: 600; line-height: 1.3; }
+
+/* Formulario Interno */
+.ads_field { display: flex; flex-direction: column; gap: 0.8vh; }
+.ads_field label { font-size: var(--fz_s4); font-weight: 800; color: var(--tx); text-transform: uppercase; letter-spacing: 0.05em; }
+.ads_input {
+  background: var(--bg); border: 1px solid var(--brd); border-radius: 1vh;
+  padding: 1.5vh; font-size: var(--fz_m1); color: var(--tx); outline: none; transition: all 0.2s; font-family: inherit;
+}
+.ads_input:focus { border-color: var(--ac); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac) 15%, transparent); }
+textarea.ads_input { resize: vertical; min-height: 10vh; }
+
+.ads_btn_action {
+  background: var(--ac); color: #fff; border: none; border-radius: 1vh;
+  padding: 1.5vh; font-weight: 800; font-size: var(--fz_m1); cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 1vh; box-shadow: 0 1vh 2vh color-mix(in srgb, var(--ac) 20%, transparent);
+}
+.ads_btn_action:hover { filter: brightness(1.1); transform: translateY(-0.2vh); }
+
+/* Switch Toggle */
+.ads_toggle_row {
+  display: flex; align-items: center; justify-content: space-between; padding: 2vh;
+  background: var(--bg4); border-radius: 1vh; border: 1px solid var(--brd);
+}
+.ads_t_info { display: flex; flex-direction: column; }
+.ads_t_tit { font-weight: 800; color: var(--tx); font-size: var(--fz_m1); }
+.ads_t_sub { font-size: var(--fz_s4); color: var(--tx3); }
+
+.ads_switch {
+  position: relative; width: 6vh; height: 3vh; background: var(--tx3);
+  border-radius: 3vh; cursor: pointer; transition: background 0.3s;
+}
+.ads_switch.on { background: #10b981; }
+.ads_switch::after {
+  content: ''; position: absolute; top: 0.3vh; left: 0.3vh; width: 2.4vh; height: 2.4vh;
+  background: #fff; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 0.2vh 0.5vh rgba(0,0,0,0.2);
+}
+.ads_switch.on::after { transform: translateX(3vh); }
+
+/* Consola de Log */
+.ads_log_wrap {
+  background: #020617; border-radius: 1vh; padding: 1.5vh; display: flex; flex-direction: column; gap: 1vh;
+  border: 1px solid rgba(255,255,255,0.1); font-family: monospace; height: 20vh; overflow-y: auto;
+}
+.ads_log_item { font-size: 1.3vh; color: #94a3b8; }
+.ads_log_item.ok { color: #34d399; }
+.ads_log_item.warn { color: #fbbf24; }
+.ads_log_item.err { color: #f87171; }
+.ads_log_item span { opacity: 0.5; margin-right: 1vh; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ads_grid { grid-template-columns: 1fr; }
+}

@@ -9,8 +9,6 @@
   overflow: hidden;
 }
 
-
-
 /* ==================== 2. CARD ==================== */
 .wilg_card {
   position: relative;
@@ -33,8 +31,6 @@
   from { opacity: 0; transform: translateY(2.5vh) scale(.97); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
-
-
 
 /* ==================== 4. FORM ==================== */
 #liForm {
@@ -145,8 +141,8 @@
   transition: all var(--tr_f); position: relative; overflow: hidden;
   animation: liFadeUp .35s ease .32s backwards;
 }
-.wilg_btn:hover   { transform: translateY(-.35vh) scale(1.02); box-shadow: 0 1.2vh 3vh var(--bg5);  }
-.wilg_btn.inactivo, .wilg_btn:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
+.wilg_btn:hover                        { transform: translateY(-.35vh) scale(1.02); box-shadow: 0 1.2vh 3vh var(--bg5); }
+.wilg_btn.inactivo, .wilg_btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; pointer-events: none; }
 
 /* LINKS */
 .wilg_links {
@@ -158,10 +154,169 @@
   color: var(--mco); font-size: var(--fz_m1); font-weight: 500;
   cursor: pointer; padding: .6vh .8vw; border-radius: .6vh;
   transition: all var(--tr_f); position: relative; white-space: nowrap;
+  user-select: none;
 }
 .wilg_links span::after { content:''; position:absolute; bottom:.2vh; left:50%; width:0; height:2px; background:var(--mco); transform:translateX(-50%); transition:width var(--tr_f); border-radius:1px; }
 .wilg_links span:hover  { color: var(--hva); background: var(--bg4); transform: translateY(-.2vh); }
 .wilg_links span:hover::after { width: 75%; }
+.wilg_rec i { margin-right: .3vh; font-size: var(--fz_s4); }
+
+/* ==================== SELECTOR DE ROL ==================== */
+.wilg_rol_selector {
+  display: flex;
+  flex-direction: column;
+  gap: .8vh;
+  animation: liFadeUp .3s ease backwards;
+}
+
+.wilg_rol_label {
+  font-size: var(--fz_m1);
+  font-weight: 600;
+  color: var(--tx2);
+  display: flex;
+  align-items: center;
+  gap: .5vh;
+}
+.wilg_rol_label i { color: var(--mco); opacity: .8; }
+
+.wilg_rol_tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .6vh;
+  background: var(--inp);
+  border: 1px solid var(--brd);
+  border-radius: 1.1vh;
+  padding: .4vh;
+}
+
+.wilg_rol_tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4vh;
+  padding: 1.1vh .5vw;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: .8vh;
+  color: var(--tx3);
+  font-size: var(--fz_s4);
+  font-weight: 500;
+  font-family: var(--ff_P);
+  cursor: pointer;
+  transition: all var(--tr_f);
+}
+.wilg_rol_tab i   { font-size: var(--fz_m2); transition: all var(--tr_f); }
+.wilg_rol_tab span { font-size: var(--fz_s4); }
+
+.wilg_rol_tab:hover {
+  color: var(--mco);
+  background: var(--bg4);
+  border-color: color-mix(in srgb, var(--mco) 20%, transparent);
+}
+
+.wilg_rol_tab.active {
+  background: var(--wb);
+  border-color: var(--mco);
+  color: var(--mco);
+  box-shadow: 0 .3vh 1.2vh var(--bg5);
+}
+.wilg_rol_tab.active i { transform: scale(1.15); }
+
+/* ==================== EXTRA CONDICIONAL ==================== */
+.wilg_rol_extra {
+  display: flex;
+  flex-direction: column;
+  gap: .8vh;
+  animation: liFadeUp .25s ease backwards;
+}
+
+.wilg_extra_label {
+  font-size: var(--fz_m1);
+  font-weight: 600;
+  color: var(--tx2);
+  display: flex;
+  align-items: center;
+  gap: .5vh;
+}
+.wilg_extra_label i { color: var(--mco); opacity: .8; }
+
+.wilg_extra_opts {
+  display: flex;
+  gap: .7vh;
+}
+
+.wilg_extra_opt {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5vh;
+  padding: .9vh 1vw;
+  background: var(--inp);
+  border: 2px solid var(--brd);
+  border-radius: .8vh;
+  color: var(--tx3);
+  font-size: var(--fz_m1);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--tr_f);
+  user-select: none;
+}
+.wilg_extra_opt input[type="radio"] { display: none; }
+.wilg_extra_opt i { font-size: var(--fz_m2); transition: all var(--tr_f); }
+
+.wilg_extra_opt:hover {
+  border-color: var(--mco);
+  color: var(--mco);
+  background: color-mix(in srgb, var(--mco) 6%, var(--inp));
+}
+.wilg_extra_opt.active {
+  border-color: var(--mco);
+  background: color-mix(in srgb, var(--mco) 10%, var(--inp));
+  color: var(--mco);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--mco) 15%, transparent);
+}
+.wilg_extra_opt.active i { transform: scale(1.1); }
+
+.wilg_extra_field {
+  display: flex;
+  flex-direction: column;
+  gap: .8vh;
+  overflow: hidden;
+  transition: all var(--tr_f);
+}
+.wilg_extra_field.wilg_extra_2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8vh 1vw;
+}
+.wilg_extra_field.hidden {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
+  padding: 0;
+}
+.wilg_extra_field:not(.hidden) {
+  max-height: 24vh;
+  opacity: 1;
+  animation: liFadeUp .25s ease backwards;
+}
+
+/* INFO BADGE — aviso de cuenta pendiente */
+.wilg_info_badge {
+  display: flex;
+  align-items: flex-start;
+  gap: .6vh;
+  padding: .9vh 1.2vh;
+  background: color-mix(in srgb, var(--mco) 8%, var(--inp));
+  border: 1px solid color-mix(in srgb, var(--mco) 25%, transparent);
+  border-radius: .8vh;
+  font-size: var(--fz_s4);
+  color: var(--tx2);
+  line-height: 1.4;
+}
+.wilg_info_badge i { color: var(--mco); margin-top: .15vh; flex-shrink: 0; }
 
 /* ==================== 6. MODAL OVERLAY ==================== */
 .wilg_mod .modalBody {
@@ -171,7 +326,7 @@
   animation: liEntrar var(--tr_m) cubic-bezier(.4,0,.2,1);
   overflow: hidden;
 }
-.wilg_mod_reg .modalBody { max-width: 42vw; }
+.wilg_mod_reg .modalBody { max-width: 44vw; }
 
 .wilg_mod .modalX {
   position: absolute; top: 1.5vh; right: 1.5vh;
@@ -192,9 +347,9 @@
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 1200px) {
-  .wilg_card { max-width: 36vw; }
-  .wilg_mod .modalBody { max-width: 36vw; }
-  .wilg_mod_reg .modalBody { max-width: 52vw; }
+  .wilg_card { max-width: 38vw; }
+  .wilg_mod .modalBody { max-width: 38vw; }
+  .wilg_mod_reg .modalBody { max-width: 56vw; }
 }
 
 @media (max-width: 768px) {
@@ -207,6 +362,9 @@
   .wilg_mod .modalBody { max-width: 95vw; min-width: auto; }
   .wilg_mod_reg .modalBody { max-width: 95vw; }
   .wilg_mod #liForm { padding: 3vh 4vw; }
+  .wilg_rol_tab span { display: none; }
+  .wilg_rol_tab { padding: 1.2vh; }
+  .wilg_extra_opts { flex-direction: column; }
 }
 
 @media (max-width: 480px) {
